@@ -9,13 +9,25 @@ def test_new_list():
     assert isinstance(new_list, LinkedList)
 
 
-# def test_insert():
-#     """Test insert method."""
-#     from linked_list import LinkedList
-#     new_list = LinkedList()
-#     test_size = new_list.size()
-#     new_list.insert("test")
-#     assert test_size < new_list.size()
+def test_insert():
+    """Test insert method."""
+    from linked_list import LinkedList
+    new_list = LinkedList()
+    test_size = new_list.size()
+    new_list.insert("test")
+    assert test_size < new_list.size()
+
+
+def test_size():
+    """Test size method."""
+    from linked_list import LinkedList
+    new_list = LinkedList()
+    new_list.insert("test")
+    new_list.insert("kickass test")
+    new_list.insert("negasonic ultra test")
+    size = new_list.size()
+    assert size == 3
+
 
 def test_node_creation():
     """Test new node."""

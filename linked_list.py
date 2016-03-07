@@ -11,15 +11,21 @@ class LinkedList(object):
 
     def insert(self, val):
         """Insert value at head of list."""
-        pass
+        new_node = Node(val, self.head)
+        self.head = new_node
 
     def pop():
         """Pop the first value off the head of the list and return it."""
         pass
 
-    def size():
+    def size(self):
         """Return the length of the list."""
-        pass
+        counter = 0
+        current_node = self.head
+        while current_node is not None:
+            counter += 1
+            current_node = current_node.get_next()
+        return counter
 
     def search(self, val):
         """Return the node containing 'val' in list if exists, else None."""
@@ -50,9 +56,8 @@ class Node(object):
         """Retrieve next node in list."""
         return self.next_node
 
-    def set_next(self, new_next):
+    def set_next(self, next_node):
         """Set next node in list."""
-        self.next_node = new_next
-
+        self.next_node = next_node
 
 
