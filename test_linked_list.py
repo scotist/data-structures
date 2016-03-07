@@ -24,9 +24,24 @@ def test_node_creation():
     assert isinstance(new_node, Node)
     assert new_node.data == "word"
 
+
 def test_get_data():
     """Test get_data method."""
     from linked_list import Node
     new_node = Node("word")
     assert new_node.get_data() == "word"
 
+
+def test_get_next():
+    """Test get_next method."""
+    from linked_list import Node
+    new_node = Node("word", "next")
+    assert new_node.get_next() == "next"
+
+
+def test_set_next():
+    """Test get_next method."""
+    from linked_list import Node
+    new_node = Node("word", "chimichanga")
+    new_node.set_next("next")
+    assert new_node.get_next() == "next"
