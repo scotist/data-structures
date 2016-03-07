@@ -11,8 +11,6 @@ class LinkedList(object):
 
     def insert(self, val):
         """Insert value at head of list."""
-        # new_node = Node(val, head)
-        #self.head = new Node
         pass
 
     def pop():
@@ -42,6 +40,19 @@ class Node(object):
     def __init__(self, data=None, next_node=None):
         """Initialize the node."""
         self.data = data
+        self.next_node = next_node
+
+    def get_data(self):
+        """Get data for node."""
+        return self.data
+
+    def get_next(self):
+        """Retrieve next node in list."""
+        return self.next_node
+
+    def set_next(self, new_next):
+        """Set next node in list."""
+        self.next_node = new_next
 
 
 

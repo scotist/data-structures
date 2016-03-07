@@ -7,3 +7,26 @@ def test_new_list():
     from linked_list import LinkedList
     new_list = LinkedList()
     assert isinstance(new_list, LinkedList)
+
+
+# def test_insert():
+#     """Test insert method."""
+#     from linked_list import LinkedList
+#     new_list = LinkedList()
+#     test_size = new_list.size()
+#     new_list.insert("test")
+#     assert test_size < new_list.size()
+
+def test_node_creation():
+    """Test new node."""
+    from linked_list import Node
+    new_node = Node("word")
+    assert isinstance(new_node, Node)
+    assert new_node.data == "word"
+
+def test_get_data():
+    """Test get_data method."""
+    from linked_list import Node
+    new_node = Node("word")
+    assert new_node.get_data() == "word"
+
