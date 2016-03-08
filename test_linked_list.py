@@ -18,6 +18,14 @@ def test_insert():
     assert test_size < new_list.size()
 
 
+def test_insert_list():
+    """Test insert method with a list."""
+    from linked_list import LinkedList
+    new_list = LinkedList()
+    new_list.insert([1, 2, 3])
+    assert new_list.size() == 3
+
+
 def test_size():
     """Test size method."""
     from linked_list import LinkedList
@@ -27,6 +35,18 @@ def test_size():
     new_list.insert("negasonic ultra test")
     size = new_list.size()
     assert size == 3
+
+
+def test_pop():
+    """Test pop method."""
+    from linked_list import LinkedList
+    first_list = LinkedList()
+    first_list.insert([1, 2, 3, 4])
+    old_size = first_list.size()
+    popped = first_list.pop()
+    new_size = first_list.size()
+    assert new_size < old_size
+    assert popped.get_data() == 1
 
 
 def test_node_creation():

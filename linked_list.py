@@ -11,12 +11,19 @@ class LinkedList(object):
 
     def insert(self, val):
         """Insert value at head of list."""
-        new_node = Node(val, self.head)
-        self.head = new_node
+        if type(val) == list:
+            for i in val[::-1]:
+                new_node = Node(val[i - 1], self.head)
+                self.head = new_node
+        else:
+            new_node = Node(val, self.head)
+            self.head = new_node
 
-    def pop():
+    def pop(self):
         """Pop the first value off the head of the list and return it."""
-        pass
+        item = self.head
+        self.head = item.get_next()
+        return item
 
     def size(self):
         """Return the length of the list."""
@@ -47,6 +54,7 @@ class Node(object):
         """Initialize the node."""
         self.data = data
         self.next_node = next_node
+        print(self.data)
 
     def get_data(self):
         """Get data for node."""
