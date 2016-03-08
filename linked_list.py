@@ -36,15 +36,39 @@ class LinkedList(object):
 
     def search(self, val):
         """Return the node containing 'val' in list if exists, else None."""
-        pass
+        current_node = self.head
+        while current_node.get_data() is not val:
+            current_node = current_node.get_next()
+            if current_node is None:
+                print("It's not there!")
+                break
+        return current_node
+        print("Found it!")
 
-    def remove(self, node):
+    def remove(self, val):
         """Remove given node from list."""
-        pass
+        previous_node = None
+        current_node = self.head
+        while current_node.get_data() is not val.get_data():
+            previous_node = current_node
+            current_node = current_node.get_next()
+            if current_node.get_data() is None:
+                break
+        if current_node.get_data() == val.get_data():
+            previous_node.set_next(current_node.get_next())
+        else:
+            print('Not Found')
 
-    def display():
+    def display(self):
         """Print list represented as Python tuple literal."""
-        pass
+        output = """"""
+        current_node = self.head
+        while current_node is not None:
+            output += '{}, '.format(current_node.get_data())
+            current_node = current_node.get_next()
+        printable = '(' + output[:-2] + ')'
+        print(printable)
+        return printable
 
 
 class Node(object):
@@ -54,7 +78,6 @@ class Node(object):
         """Initialize the node."""
         self.data = data
         self.next_node = next_node
-        print(self.data)
 
     def get_data(self):
         """Get data for node."""
@@ -67,5 +90,4 @@ class Node(object):
     def set_next(self, next_node):
         """Set next node in list."""
         self.next_node = next_node
-
 

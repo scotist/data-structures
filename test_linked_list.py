@@ -49,6 +49,33 @@ def test_pop():
     assert popped.get_data() == 1
 
 
+def test_search():
+    """Test search method."""
+    from linked_list import LinkedList
+    new_list = LinkedList()
+    new_list.insert([1, 2, 3, 4])
+    query = new_list.search(3)
+    assert query.get_data() == 3
+
+
+def test_remove():
+    """Test remove method."""
+    from linked_list import LinkedList
+    new_list = LinkedList()
+    new_list.insert([1, 2, 3, 4])
+    new_list.remove(new_list.search(3))
+    assert new_list.size() == 3
+
+
+def test_display():
+    """Test display method."""
+    from linked_list import LinkedList
+    new_list = LinkedList()
+    new_list.insert([1, 2, 3, 4])
+    new_list.display()
+    assert new_list.display() == '(1, 2, 3, 4)'
+
+
 def test_node_creation():
     """Test new node."""
     from linked_list import Node
