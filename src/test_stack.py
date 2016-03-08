@@ -7,6 +7,15 @@ def test_stack():
     stacky = Stack()
     assert isinstance(stacky, Stack)
 
+def test_start():
+    """Test that empty stack has no head."""
+    from stack import Stack
+    stacky = Stack()
+    try:
+        stacky.pop().get_data()
+    except IndexError:
+        assert True
+
 def test_push():
     from stack import Stack
     stacky = Stack()
@@ -18,3 +27,20 @@ def test_pop():
     stacky = Stack()
     stacky.push(1)
     assert stacky.pop().get_data() == 1
+
+def test_none():
+    from stack import Stack
+    stacky = Stack()
+    stacky.push([None, 3, 4, 1, "Hello world!"])
+    assert stacky.pop().get_data() is None
+
+def test_empty():
+    from stack import Stack
+    stacky = Stack()
+    stacky.push([])
+    try:
+        stacky.pop().get_data()
+    except IndexError:
+        assert True
+
+
