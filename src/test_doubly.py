@@ -6,6 +6,12 @@ INSERT_ITEMS = [(['one', 'two', 'three', 'four'], 4)]
 PREV_VAL = [(['one', 'two', 'three', 'four'], 'two')]
 POP = [(['one', 'two', 'three', 'four'])]
 APPEND = [(['one', 'two', 'three'], 'three')]
+SHIFT = [(['one', 'two', 'three', 'four'], 'four'),
+         (['five', 'hat', 'bunny', 'dude'], 'dude')]
+EMPTY = [([])]
+REMOVE = [(['one', 'two', 'three', 'four', 'five'], 'three', 'two', 'four', 4),
+          (['Hello', 'This', 'is', 'a', 'test'], 'a', 'is', 'test', 4)]
+
 
 def test_inheritance():
     from doubly_linked import DoublyLinked
@@ -60,3 +66,31 @@ def test_append(li, result):
     print(result)
     assert new_list.search('four').prev_node.get_data() == result
     assert new_list.search('four').get_next() == new_list._mark
+
+
+@pytest.mark.parametrize('li, result', SHIFT)
+def test_shift(li, result):
+    from doubly_linked import DoublyLinked
+    new_list = DoublyLinked()
+    new_list.insert(li)
+    assert new_list.shift().get_data() == result
+
+
+@pytest.mark.parametrize('li', EMPTY)
+def test_shift_empty(li):
+    from doubly_linked import DoublyLinked
+    new_list = DoublyLinked()
+    new_list.insert(li)
+    with pytest.raises(IndexError):
+        new_list.shift()
+
+
+@pytest.mark.parametrize('li, remove_me, prev, next_item, size', REMOVE)
+def test_remove(li, remove_me, prev, next_item, size):
+    from doubly_linked import DoublyLinked
+    new_list = DoublyLinked()
+    new_list.insert(li)
+    new_list.remove(remove_me)
+    assert new_list.size() == size
+    assert new_list.search(prev).next_node == new_list.search(next_item)
+    assert new_list.search(next_item).prev_node == new_list.search(prev)

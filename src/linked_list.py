@@ -9,7 +9,7 @@ class LinkedList(object):
         """Initialize the list."""
         self.head = head
         self._mark = self.head
-        
+
     def insert(self, val):
         """Insert value at head of list."""
         if type(val) == list:
@@ -44,7 +44,7 @@ class LinkedList(object):
         while current_node.get_data() is not val:
             current_node = current_node.get_next()
             if current_node is self._mark:
-                print("It's not there!")
+                raise IndexError
                 break
         return current_node
         print("Found it!")

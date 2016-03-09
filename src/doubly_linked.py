@@ -41,7 +41,22 @@ class DoublyLinked(LinkedList):
         cur.set_next(new_node)
         new_node.set_previous(cur)
 
+    def shift(self):
+        """Removes and returns the last value from the tail of the list."""
+        cur = self.head
+        if cur == self._mark:
+            raise IndexError
+        else:
+            while cur.next_node != self._mark:
+                cur = cur.next_node
+            cur.prev_node.next_node = self._mark
+            return cur
 
+    def remove(self, val):
+        """Remove given node from list."""
+        target = self.search(val)
+        target.prev_node.next_node = target.next_node
+        target.next_node.prev_node = target.prev_node
 class DoubleNode(Node):
     """Double Node constructor for doubly linked list."""
 
