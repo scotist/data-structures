@@ -4,7 +4,8 @@ import pytest
 
 INSERT_ITEMS = [(['one', 'two', 'three', 'four'], 4)]
 PREV_VAL = [(['one', 'two', 'three', 'four'], 'two')]
-POP = [(['one', 'two', 'three', 'four'], None)]
+POP = [(['one', 'two', 'three', 'four'])]
+APPEND = [(['one', 'two', 'three'], 'three')]
 
 def test_inheritance():
     from doubly_linked import DoublyLinked
@@ -38,9 +39,24 @@ def test_prev_2(li, result):
     assert new_list.search('three').prev_node.get_data() == result
 
 
-@pytest.mark.parametrize('li, result', POP)
-def test_pop(li, result):
+@pytest.mark.parametrize('li', POP)
+def test_pop(li):
     from doubly_linked import DoublyLinked
     new_list = DoublyLinked()
     new_list.insert(li)
     assert new_list.pop().get_data() == 'one'
+    try:
+        new_list.head.prev_node.get_data()
+    except AttributeError:
+        assert True
+
+
+@pytest.mark.parametrize('li, result', APPEND)
+def test_append(li, result):
+    from doubly_linked import DoublyLinked
+    new_list = DoublyLinked()
+    new_list.insert(li)
+    new_list.append('four')
+    print(result)
+    assert new_list.search('four').prev_node.get_data() == result
+    assert new_list.search('four').get_next() == new_list._mark
