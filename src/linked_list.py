@@ -1,14 +1,14 @@
 # _*_ encoding: utf-8 _*_
 """Demonstrate linked list in python."""
-_mark = object()
 
 
 class LinkedList(object):
     """Demonstrate linked list."""
 
-    def __init__(self, head=_mark):
+    def __init__(self, head=object()):
         """Initialize the list."""
         self.head = head
+        self._mark = self.head
 
     def insert(self, val):
         """Insert value at head of list."""
@@ -23,7 +23,7 @@ class LinkedList(object):
     def pop(self):
         """Pop the first value off the head of the list and return it."""
         item = self.head
-        if item is _mark:
+        if item is self._mark:
             raise IndexError
         else:
             self.head = item.get_next()
@@ -33,7 +33,7 @@ class LinkedList(object):
         """Return the length of the list."""
         counter = 0
         current_node = self.head
-        while current_node is not _mark:
+        while current_node is not self._mark:
             counter += 1
             current_node = current_node.get_next()
         return counter
@@ -43,8 +43,8 @@ class LinkedList(object):
         current_node = self.head
         while current_node.get_data() is not val:
             current_node = current_node.get_next()
-            if current_node is _mark:
-                print("It's not there!")
+            if current_node is self._mark:
+                raise IndexError
                 break
         return current_node
         print("Found it!")
@@ -67,7 +67,7 @@ class LinkedList(object):
         """Print list represented as Python tuple literal."""
         output = """"""
         current_node = self.head
-        while current_node is not _mark:
+        while current_node is not self._mark:
             output += '{}, '.format(current_node.get_data())
             current_node = current_node.get_next()
         printable = '(' + output[:-2] + ')'
