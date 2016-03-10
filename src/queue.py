@@ -22,7 +22,7 @@ class Queue(object):
     def peek(self):
         """Return next value in queue."""
         if self._container.head is self._container._mark:
-            return 0
+            return None
         else:
             return self._container.head.get_data()
 

@@ -2,9 +2,12 @@
 import pytest
 """Test queue.py."""
 
-SIZE = [(['one', 'two', 'three', 'four'], 4)]
-DEQUEUE = [(['one', 'two', 'three', 'four'], 'one')]
-ENQUEUE = [(['one'], 'one'),
+SIZE = [([], 0),
+        (['one', 'two', 'three', 'four'], 4)]
+DEQUEUE = [([], IndexError),
+           (['one', 'two', 'three', 'four'], 'one')]
+ENQUEUE = [([], None),
+           (['one'], 'one'),
            (['one', 'two', 'three'], 'three')]
 
 
@@ -31,6 +34,22 @@ def test_dequeue(li, result):
     """Test dequeue method."""
     from queue import Queue
     new_list = Queue()
+    if len(li) == 0:
+        with pytest.raises(result):
+            new_list.dequeue()
+    else:
+        for item in li:
+            new_list.enqueue(item)
+        assert new_list.dequeue() == result
+
+
+@pytest.mark.parametrize('li, result', SIZE)
+def test_size(li, result):
+    """Test size method."""
+    from queue import Queue
+    new_list = Queue()
     for item in li:
         new_list.enqueue(item)
-    assert new_list.dequeue() == result
+    assert result == new_list.size()
+
+
