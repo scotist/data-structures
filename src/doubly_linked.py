@@ -31,7 +31,7 @@ class DoublyLinked(LinkedList):
         else:
             self.head = item.get_next()
             self.head.set_previous(self._mark)
-            return item
+            return item.get_data()
 
     def append(self, val):
         """Append the given item to the tail of the list."""

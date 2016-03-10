@@ -50,9 +50,9 @@ def test_pop(li):
     from doubly_linked import DoublyLinked
     new_list = DoublyLinked()
     new_list.insert(li)
-    assert new_list.pop().get_data() == 'one'
+    assert new_list.pop() == 'one'
     try:
-        new_list.head.prev_node.get_data()
+        new_list.head.prev_node
     except AttributeError:
         assert True
 
