@@ -32,7 +32,7 @@ def test_pop():
     from stack import Stack
     stacky = Stack()
     stacky.push(1)
-    assert stacky.pop().get_data() == 1
+    assert stacky.pop() == 1
 
 
 def test_none():
@@ -40,7 +40,7 @@ def test_none():
     from stack import Stack
     stacky = Stack()
     stacky.push([None, 3, 4, 1, "Hello world!"])
-    assert stacky.pop().get_data() is None
+    assert stacky.pop() is None
 
 
 def test_empty():

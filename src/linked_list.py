@@ -27,7 +27,7 @@ class LinkedList(object):
             raise IndexError
         else:
             self.head = item.get_next()
-            return item
+            return item.get_data()
 
     def size(self):
         """Return the length of the list."""

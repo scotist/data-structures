@@ -3,6 +3,7 @@ from linked_list import Node
 
 
 class DoublyLinked(LinkedList):
+    """Implement a doubly-linked list from a singly-linked list."""
 
     def insert(self, val):
         """Insert value at head of list."""
@@ -42,7 +43,7 @@ class DoublyLinked(LinkedList):
         new_node.set_previous(cur)
 
     def shift(self):
-        """Removes and returns the last value from the tail of the list."""
+        """Remove and returns the last value from the tail of the list."""
         cur = self.head
         if cur == self._mark:
             raise IndexError
@@ -57,6 +58,8 @@ class DoublyLinked(LinkedList):
         target = self.search(val)
         target.prev_node.next_node = target.next_node
         target.next_node.prev_node = target.prev_node
+
+
 class DoubleNode(Node):
     """Double Node constructor for doubly linked list."""
 
@@ -67,4 +70,5 @@ class DoubleNode(Node):
         self.next_node = next_node
 
     def set_previous(self, prev):
+        """Set previous node."""
         self.prev_node = prev

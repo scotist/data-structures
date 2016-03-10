@@ -46,7 +46,7 @@ def test_pop():
     popped = first_list.pop()
     new_size = first_list.size()
     assert new_size < old_size
-    assert popped.get_data() == 1
+    assert popped == 1
 
 
 def test_search():
