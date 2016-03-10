@@ -36,11 +36,15 @@ class DoublyLinked(LinkedList):
     def append(self, val):
         """Append the given item to the tail of the list."""
         cur = self.head
-        new_node = DoubleNode(val, self._mark)
-        while cur.next_node != self._mark:
-            cur = cur.next_node
-        cur.set_next(new_node)
-        new_node.set_previous(cur)
+        if cur == self._mark:
+            new_node = DoubleNode(val, self._mark)
+            self.head = new_node
+        else:
+            new_node = DoubleNode(val, self._mark)
+            while cur.next_node != self._mark:
+                cur = cur.next_node
+            cur.set_next(new_node)
+            new_node.set_previous(cur)
 
     def shift(self):
         """Remove and returns the last value from the tail of the list."""

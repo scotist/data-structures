@@ -5,7 +5,8 @@ import pytest
 SIZE = [(['one', 'two', 'three', 'four'], 4)]
 PEEK = [(['one', 'two', 'three', 'four'], 'one')]
 DEQUEUE = [(['one', 'two', 'three', 'four'])]
-ENQUEUE = [(['one', 'two', 'three'], 'three')]
+ENQUEUE = [(['one'], 'one'),
+           (['one', 'two', 'three'], 'three')]
 
 
 def test_inheritance():
@@ -14,3 +15,15 @@ def test_inheritance():
     from queue import Queue
     new_list = Queue()
     assert isinstance(new_list._container, DoublyLinked)
+
+
+@pytest.mark.parametrize('li, result', ENQUEUE)
+def test_enqueue(li, result):
+    """Test enqueue method."""
+    # from doubly_linked import DoublyLinked
+    from queue import Queue
+    new_list = Queue()
+    for item in li[::-1]:
+        new_list.enqueue(item)
+    assert new_list.peek() == result
+
