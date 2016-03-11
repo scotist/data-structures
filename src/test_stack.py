@@ -1,6 +1,6 @@
 # _*_ encoding: utf-8 _*_
 """Test stack.py."""
-
+import pytest
 
 def test_stack():
     """Test list constructor."""
@@ -48,9 +48,7 @@ def test_empty():
     from stack import Stack
     stacky = Stack()
     stacky.push([])
-    try:
+    with pytest.raises(IndexError):
         stacky.pop().get_data()
-    except IndexError:
-        assert True
 
 
