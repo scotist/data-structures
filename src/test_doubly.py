@@ -2,7 +2,7 @@
 """Test linked_list.py."""
 import pytest
 
-INSERT_ITEMS = [(['one', 'two', 'three', 'four'], 4)]
+INSERT_ITEMS = [(['one', 'two', 'three', 'four'], 'one')]
 PREV_VAL = [(['one', 'two', 'three', 'four'], 'two')]
 POP = [(['one', 'two', 'three', 'four'])]
 APPEND = [(['one', 'two', 'three'], 'three')]
@@ -20,12 +20,14 @@ def test_new_list():
     assert isinstance(new_list, DoublyLinked)
 
 
-# @pytest.mark.parametrize('li, result', INSERT_ITEMS)
-# def test_insert(li, result):
-#     from doubly_linked import DoublyLinked
-#     new_list = DoublyLinked()
-#     new_list.insert(li)
-#     assert new_list.size() == 4
+@pytest.mark.parametrize('li, result', INSERT_ITEMS)
+def test_insert(li, result):
+    from doubly_linked import DoublyLinked
+    new_list = DoublyLinked()
+    new_list.insert(li)
+    # assert new_list.size() == 4
+    new_list.pop()
+    assert result == 'one'
 
 
 # @pytest.mark.parametrize('li, result', PREV_VAL)
