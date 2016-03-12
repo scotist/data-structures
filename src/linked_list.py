@@ -5,10 +5,12 @@
 class LinkedList(object):
     """Demonstrate linked list."""
 
-    def __init__(self, head=object()):
+    def __init__(self, val=None):
         """Initialize the list."""
-        self.head = head
+        self.head = object()
         self._mark = self.head
+        if val:
+            self.insert(val)
 
     def insert(self, val):
         """Insert value at head of list."""
