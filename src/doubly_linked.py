@@ -2,8 +2,15 @@ from linked_list import LinkedList
 from linked_list import Node
 
 
-class DoublyLinked(LinkedList):
+class DoublyLinked(object):
     """Implement a doubly-linked list from a singly-linked list."""
+
+    def __init__(self, val=None):
+        """Initialize the list."""
+        self.head = object()
+        self._mark = self.head
+        if val:
+            self.insert(val)
 
     def insert(self, val):
         """Insert value at head of list."""

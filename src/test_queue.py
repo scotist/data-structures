@@ -43,11 +43,11 @@ def test_dequeue(li, result):
         assert new_list.dequeue() == result
 
 
-@pytest.mark.parametrize('li, result', SIZE)
-def test_size(li, result):
-    """Test size method."""
-    from queue import Queue
-    new_list = Queue()
-    for item in li:
-        new_list.enqueue(item)
-    assert result == new_list.size()
+# @pytest.mark.parametrize('li, result', SIZE)
+# def test_size(li, result):
+#     """Test size method."""
+#     from queue import Queue
+#     new_list = Queue()
+#     for item in li:
+#         new_list.enqueue(item)
+#     assert result == new_list.size()
