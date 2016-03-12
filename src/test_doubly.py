@@ -13,11 +13,11 @@ REMOVE = [(['one', 'two', 'three', 'four', 'five'], 'three', 'two', 'four', 4),
           (['Hello', 'This', 'is', 'a', 'test'], 'a', 'is', 'test', 4)]
 
 
-def test_inheritance():
-    from doubly_linked import DoublyLinked
-    from linked_list import LinkedList
-    new_list = DoublyLinked()
-    assert isinstance(new_list, LinkedList)
+# def test_inheritance():
+#     from doubly_linked import DoublyLinked
+#     from linked_list import LinkedList
+#     new_list = DoublyLinked()
+#     assert isinstance(new_list, LinkedList)
 
 
 @pytest.mark.parametrize('li, result', INSERT_ITEMS)

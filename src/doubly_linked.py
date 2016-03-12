@@ -1,9 +1,35 @@
-from linked_list import LinkedList
-from linked_list import Node
+# _*_ encoding: utf-8 _*_
+"""Demonstrate linked list in python."""
 
-
-class DoublyLinked(LinkedList):
+class DoublyLinked(object):
     """Implement a doubly-linked list from a singly-linked list."""
+
+    def __init__(self, val=None):
+        """Initialize the list."""
+        self.head = object()
+        self._mark = self.head
+        if val:
+            self.insert(val)
+
+    def size(self):
+        """Return the length of the list."""
+        counter = 0
+        current_node = self.head
+        while current_node is not self._mark:
+            counter += 1
+            current_node = current_node.get_next()
+        return counter
+
+    def search(self, val):
+        """Return the node containing 'val' in list if exists, else None."""
+        current_node = self.head
+        while current_node.get_data() is not val:
+            current_node = current_node.get_next()
+            if current_node is self._mark:
+                raise IndexError
+                break
+        return current_node
+        print("Found it!")
 
     def insert(self, val):
         """Insert value at head of list."""
@@ -22,6 +48,17 @@ class DoublyLinked(LinkedList):
             except AttributeError:
                 pass
             self.head = new_node
+
+    def display(self):
+        """Print list represented as Python tuple literal."""
+        output = """"""
+        current_node = self.head
+        while current_node is not self._mark:
+            output += '{}, '.format(current_node.get_data())
+            current_node = current_node.get_next()
+        printable = '(' + output[:-2] + ')'
+        print(printable)
+        return printable
 
     def pop(self):
         """Pop the first value off the head of the list and return it."""
@@ -64,7 +101,7 @@ class DoublyLinked(LinkedList):
         target.next_node.prev_node = target.prev_node
 
 
-class DoubleNode(Node):
+class DoubleNode(object):
     """Double Node constructor for doubly linked list."""
 
     def __init__(self, data=None, next_node=None, prev_node=None):
@@ -76,3 +113,15 @@ class DoubleNode(Node):
     def set_previous(self, prev):
         """Set previous node."""
         self.prev_node = prev
+
+    def get_data(self):
+        """Get data for node."""
+        return self.data
+
+    def get_next(self):
+        """Retrieve next node in list."""
+        return self.next_node
+
+    def set_next(self, next_node):
+        """Set next node in list."""
+        self.next_node = next_node
