@@ -15,7 +15,7 @@ class DoublyLinked(object):
 
     def insert(self, val):
         """Insert value at head of list."""
-        if type(val) == list:
+        if isinstance(val, list):
             for item in val[::-1]:
                 new_node = DoubleNode(item, self.head, self._mark)
                 try:
@@ -38,7 +38,10 @@ class DoublyLinked(object):
             raise IndexError
         else:
             self.head = item.get_next()
-            self.head.set_previous(self._mark)
+            try:
+                self.head.set_previous(self._mark)
+            except AttributeError:
+                pass
             return item.get_data()
 
     def append(self, val):

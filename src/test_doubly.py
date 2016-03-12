@@ -21,10 +21,10 @@ def test_new_list():
 
 @pytest.mark.parametrize('li, result', INSERT_ITEMS)
 def test_insert(li, result):
+    """Test insert function."""
     from doubly_linked import DoublyLinked
     new_list = DoublyLinked()
     new_list.insert(li)
-    # assert new_list.size() == 4
     new_list.pop()
     assert result == 'one'
 
