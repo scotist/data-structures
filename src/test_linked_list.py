@@ -9,6 +9,20 @@ def test_new_list():
     assert isinstance(new_list, LinkedList)
 
 
+def test_new_populated_list_0():
+    """Test ability to make new list with value."""
+    from linked_list import LinkedList
+    new_list = LinkedList(1)
+    assert new_list.size() == 1
+
+
+def test_new_populated_list_1():
+    """Test ability to make new list with value."""
+    from linked_list import LinkedList
+    new_list = LinkedList([1, 2])
+    assert new_list.size() == 2
+
+
 def test_insert():
     """Test insert method."""
     from linked_list import LinkedList
@@ -64,7 +78,7 @@ def test_remove():
     new_list = LinkedList()
     new_list.insert([1, 2, 3, 4])
     new_list.remove(new_list.search(3))
-    assert new_list.size() == 3
+    assert new_list.display() == '(1, 2, 4)'
 
 
 def test_display():
