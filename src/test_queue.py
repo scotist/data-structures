@@ -1,6 +1,6 @@
 # _*_ encoding: utf-8 _*_
-import pytest
 """Test queue.py."""
+import pytest
 
 SIZE = [([], 0),
         (['one', 'two', 'three', 'four'], 4)]
@@ -51,5 +51,3 @@ def test_size(li, result):
     for item in li:
         new_list.enqueue(item)
     assert result == new_list.size()
-
-

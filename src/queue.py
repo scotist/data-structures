@@ -29,5 +29,3 @@ class Queue(object):
     def size(self):
         """Return size of queue."""
         return self._container.size()
-
-
