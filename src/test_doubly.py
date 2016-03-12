@@ -5,7 +5,7 @@ import pytest
 INSERT_ITEMS = [(['one', 'two', 'three', 'four'], 'one')]
 PREV_VAL = [(['one', 'two', 'three', 'four'], 'two')]
 POP = [(['one', 'two', 'three', 'four'])]
-APPEND = [(['one', 'two', 'three'], 'three')]
+APPEND = [(['one', 'two', 'three'], 'four')]
 SHIFT = [(['one', 'two', 'three', 'four'], 'four'),
          (['five', 'hat', 'bunny', 'dude'], 'dude')]
 EMPTY = [([])]
@@ -60,15 +60,13 @@ def test_pop(li):
         assert True
 
 
-# @pytest.mark.parametrize('li, result', APPEND)
-# def test_append(li, result):
-#     from doubly_linked import DoublyLinked
-#     new_list = DoublyLinked()
-#     new_list.insert(li)
-#     new_list.append('four')
-#     print(result)
-#     assert new_list.search('four').prev_node.get_data() == result
-#     assert new_list.search('four').get_next() == new_list._mark
+@pytest.mark.parametrize('li, result', APPEND)
+def test_append(li, result):
+    from doubly_linked import DoublyLinked
+    new_list = DoublyLinked()
+    new_list.insert(li)
+    new_list.append('four')
+    assert result == new_list.shift().get_data()
 
 
 @pytest.mark.parametrize('li, result', SHIFT)
