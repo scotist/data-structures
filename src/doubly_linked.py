@@ -1,4 +1,5 @@
-from linked_list import LinkedList
+# _*_ encoding: utf-8 _*_
+"""Demonstrate doubly-linked list in python."""
 from linked_list import Node
 
 
@@ -64,11 +65,19 @@ class DoublyLinked(object):
             cur.prev_node.next_node = self._mark
             return cur
 
-    def remove(self, val):
-        """Remove given node from list."""
-        target = self.search(val)
-        target.prev_node.next_node = target.next_node
-        target.next_node.prev_node = target.prev_node
+    def remove(self, value):
+        """Remove the first occurrence of value in the list."""
+        previous_node = None
+        current_node = self.head
+        while current_node.get_data() is not value:
+            previous_node = current_node
+            current_node = current_node.get_next()
+            if current_node.get_data() is None:
+                break
+        if current_node.get_data() == value:
+            previous_node.set_next(current_node.get_next())
+        else:
+            print('Not Found')
 
 
 class DoubleNode(Node):

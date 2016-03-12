@@ -3,7 +3,6 @@
 import pytest
 
 INSERT_ITEMS = [(['one', 'two', 'three', 'four'], 'one')]
-PREV_VAL = [(['one', 'two', 'three', 'four'], 'two')]
 POP = [(['one', 'two', 'three', 'four'])]
 APPEND = [(['one', 'two', 'three'], 'four')]
 SHIFT = [(['one', 'two', 'three', 'four'], 'four'),
@@ -28,23 +27,6 @@ def test_insert(li, result):
     # assert new_list.size() == 4
     new_list.pop()
     assert result == 'one'
-
-
-# @pytest.mark.parametrize('li, result', PREV_VAL)
-# def test_prev(li, result):
-#     from doubly_linked import DoublyLinked
-#     new_list = DoublyLinked()
-#     new_list.insert(li)
-#     assert new_list.search('three').prev_node.get_data() == result
-
-
-# @pytest.mark.parametrize('li, result', PREV_VAL)
-# def test_prev_2(li, result):
-#     from doubly_linked import DoublyLinked
-#     new_list = DoublyLinked()
-#     for item in li[::-1]:
-#         new_list.insert(item)
-#     assert new_list.search('three').prev_node.get_data() == result
 
 
 @pytest.mark.parametrize('li', POP)
@@ -86,12 +68,9 @@ def test_shift_empty(li):
         new_list.shift()
 
 
-# @pytest.mark.parametrize('li, remove_me, prev, next_item, size', REMOVE)
-# def test_remove(li, remove_me, prev, next_item, size):
-#     from doubly_linked import DoublyLinked
-#     new_list = DoublyLinked()
-#     new_list.insert(li)
-#     new_list.remove(remove_me)
-#     assert new_list.size() == size
-#     assert new_list.search(prev).next_node == new_list.search(next_item)
-#     assert new_list.search(next_item).prev_node == new_list.search(prev)
+def test_remove():
+    from doubly_linked import DoublyLinked
+    new_list = DoublyLinked()
+    new_list.insert([1, 2, 3])
+    new_list.remove(3)
+    assert new_list.shift().get_data() == 2
