@@ -3,12 +3,16 @@
 import pytest
 
 SIZE = [([], 0),
-        (['one', 'two', 'three', 'four'], 4)]
+        (['one', 'two', 'three', 'four'], 4),
+        (['Hello'], 1)]
 DEQUEUE = [([], IndexError),
-           (['one', 'two', 'three', 'four'], 'one')]
+           (['one', 'two', 'three', 'four'], 'one'),
+           (['one'], 'one'),
+           (['Uno'], 'Uno')]
 ENQUEUE = [([], None),
            (['one'], 'one'),
-           (['one', 'two', 'three'], 'three')]
+           (['one', 'two', 'three'], 'three'),
+           (['How', 'are', 'you', 'doing!?'], 'doing!?')]
 
 
 def test_inheritance():
@@ -43,11 +47,11 @@ def test_dequeue(li, result):
         assert new_list.dequeue() == result
 
 
-# @pytest.mark.parametrize('li, result', SIZE)
-# def test_size(li, result):
-#     """Test size method."""
-#     from queue import Queue
-#     new_list = Queue()
-#     for item in li:
-#         new_list.enqueue(item)
-#     assert result == new_list.size()
+@pytest.mark.parametrize('li, result', SIZE)
+def test_size(li, result):
+    """Test size method."""
+    from queue import Queue
+    new_list = Queue()
+    for item in li:
+        new_list.enqueue(item)
+    assert result == new_list.size()
