@@ -1,13 +1,21 @@
-from linked_list import LinkedList
+# _*_ encoding: utf-8 _*_
+"""Demonstrate doubly-linked list in python."""
 from linked_list import Node
 
 
-class DoublyLinked(LinkedList):
+class DoublyLinked(object):
     """Implement a doubly-linked list from a singly-linked list."""
+
+    def __init__(self, val=None):
+        """Initialize the list."""
+        self.head = object()
+        self._mark = self.head
+        if val:
+            self.insert(val)
 
     def insert(self, val):
         """Insert value at head of list."""
-        if type(val) == list:
+        if isinstance(val, list):
             for item in val[::-1]:
                 new_node = DoubleNode(item, self.head, self._mark)
                 try:
@@ -30,7 +38,10 @@ class DoublyLinked(LinkedList):
             raise IndexError
         else:
             self.head = item.get_next()
-            self.head.set_previous(self._mark)
+            try:
+                self.head.set_previous(self._mark)
+            except AttributeError:
+                pass
             return item.get_data()
 
     def append(self, val):
@@ -57,11 +68,19 @@ class DoublyLinked(LinkedList):
             cur.prev_node.next_node = self._mark
             return cur
 
-    def remove(self, val):
-        """Remove given node from list."""
-        target = self.search(val)
-        target.prev_node.next_node = target.next_node
-        target.next_node.prev_node = target.prev_node
+    def remove(self, value):
+        """Remove the first occurrence of value in the list."""
+        previous_node = None
+        current_node = self.head
+        while current_node.get_data() is not value:
+            previous_node = current_node
+            current_node = current_node.get_next()
+            if current_node.get_data() is None:
+                break
+        if current_node.get_data() == value:
+            previous_node.set_next(current_node.get_next())
+        else:
+            print('Not Found')
 
 
 class DoubleNode(Node):
