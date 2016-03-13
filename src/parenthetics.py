@@ -11,7 +11,9 @@
 def evaluate_parens(sample):
     """Check whether sets of parentheses in string are well-formed."""
     parens = []
-    counter = 0
+    open_check = 0
+    closed_check = 0
+    balanced = True
 
     for c in reversed(sample):
         if c is '(':
@@ -21,9 +23,16 @@ def evaluate_parens(sample):
 
     for item in parens:
         if item == '(':
-            counter += 1
+            open_check += 1
         elif item == ')':
-            counter -= 1
+            closed_check += 1
+
+    if open_check > closed_check:
+        return 1
+    elif closed_check > open_check:
+        return -1
+    elif closed_check == open_check:
+        return 0
 
     # for p in parens:
     #     test_stack.push(p)
