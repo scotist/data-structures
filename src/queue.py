@@ -27,5 +27,10 @@ class Queue(object):
             return self._container.head.get_data()
 
     def size(self):
-        """Return size of queue."""
-        return self._container.size()
+        """Return the length of the list."""
+        counter = 0
+        current_node = self._container.head
+        while current_node is not self._container._mark:
+            counter += 1
+            current_node = current_node.get_next()
+        return counter
