@@ -60,7 +60,7 @@ def test_pop():
     popped = first_list.pop()
     new_size = first_list.size()
     assert new_size < old_size
-    assert popped == 1
+    assert popped == 4
 
 
 def test_search():
@@ -78,7 +78,15 @@ def test_remove():
     new_list = LinkedList()
     new_list.insert([1, 2, 3, 4])
     new_list.remove(new_list.search(3))
-    assert new_list.display() == '(1, 2, 4)'
+    assert new_list.display() == '(4, 2, 1)'
+
+
+def test_remove_0():
+    """Test remove method on single-item list."""
+    from linked_list import LinkedList
+    new_list = LinkedList()
+    new_list.insert([1])
+    assert new_list.remove(new_list.search(1)) == 1
 
 
 def test_display():
@@ -87,7 +95,7 @@ def test_display():
     new_list = LinkedList()
     new_list.insert([1, 2, 3, 4])
     new_list.display()
-    assert new_list.display() == '(1, 2, 3, 4)'
+    assert new_list.display() == '(4, 3, 2, 1)'
 
 
 def test_node_creation():

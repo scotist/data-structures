@@ -39,7 +39,7 @@ def test_none():
     """Test that none object can be item in stack."""
     from stack import Stack
     stacky = Stack()
-    stacky.push([None, 3, 4, 1, "Hello world!"])
+    stacky.push([3, 4, 1, "Hello world!", None])
     assert stacky.pop() is None
 
 

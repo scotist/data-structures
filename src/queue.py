@@ -7,9 +7,9 @@ from doubly_linked import DoublyLinked
 class Queue(object):
     """Make queue object from doubly-linked list object."""
 
-    def __init__(self):
+    def __init__(self, val=None):
         """Initialize queue."""
-        self._container = DoublyLinked()
+        self._container = DoublyLinked(val)
 
     def enqueue(self, val):
         """Push item to queue."""

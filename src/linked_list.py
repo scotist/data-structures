@@ -15,7 +15,7 @@ class LinkedList(object):
     def insert(self, val):
         """Insert value at head of list."""
         if type(val) == list:
-            for item in val[::-1]:
+            for item in val:
                 new_node = Node(item, self.head)
                 self.head = new_node
         else:
@@ -26,6 +26,7 @@ class LinkedList(object):
         """Pop the first value off the head of the list and return it."""
         item = self.head
         if item is self._mark:
+            print("list is empty")
             raise IndexError
         else:
             self.head = item.get_next()
@@ -46,8 +47,8 @@ class LinkedList(object):
         while current_node.get_data() is not val:
             current_node = current_node.get_next()
             if current_node is self._mark:
+                print("list is empty")
                 raise IndexError
-                break
         return current_node
         print("Found it!")
 
@@ -61,7 +62,10 @@ class LinkedList(object):
             if current_node.get_data() is None:
                 break
         if current_node.get_data() == val.get_data():
-            previous_node.set_next(current_node.get_next())
+            try:
+                previous_node.set_next(current_node.get_next())
+            except:
+                return self.pop()
         else:
             print('Not Found')
 
