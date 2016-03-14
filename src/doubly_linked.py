@@ -65,8 +65,11 @@ class DoublyLinked(object):
         else:
             while cur.next_node != self._mark:
                 cur = cur.next_node
-            cur.prev_node.next_node = self._mark
-            return cur
+            try:
+                cur.prev_node.next_node = self._mark
+            except AttributeError:
+                raise IndexError
+            return cur.get_data()
 
     def remove(self, value):
         """Remove the first occurrence of value in the list."""

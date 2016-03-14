@@ -48,7 +48,7 @@ def test_append(li, result):
     new_list = DoublyLinked()
     new_list.insert(li)
     new_list.append('four')
-    assert result == new_list.shift().get_data()
+    assert result == new_list.shift()
 
 
 @pytest.mark.parametrize('li, result', SHIFT)
@@ -56,7 +56,7 @@ def test_shift(li, result):
     from doubly_linked import DoublyLinked
     new_list = DoublyLinked()
     new_list.insert(li)
-    assert new_list.shift().get_data() == result
+    assert new_list.shift() == result
 
 
 @pytest.mark.parametrize('li', EMPTY)
@@ -73,4 +73,4 @@ def test_remove():
     new_list = DoublyLinked()
     new_list.insert([1, 2, 3])
     new_list.remove(3)
-    assert new_list.shift().get_data() == 2
+    assert new_list.shift() == 2
