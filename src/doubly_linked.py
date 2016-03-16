@@ -1,5 +1,7 @@
 # _*_ encoding: utf-8 _*_
-"""Demonstrate linked list in python."""
+"""Demonstrate doubly-linked list in python."""
+from linked_list import Node
+
 
 class DoublyLinked(object):
     """Implement a doubly-linked list from a singly-linked list."""
@@ -33,7 +35,7 @@ class DoublyLinked(object):
 
     def insert(self, val):
         """Insert value at head of list."""
-        if type(val) == list:
+        if isinstance(val, list):
             for item in val[::-1]:
                 new_node = DoubleNode(item, self.head, self._mark)
                 try:
@@ -64,10 +66,14 @@ class DoublyLinked(object):
         """Pop the first value off the head of the list and return it."""
         item = self.head
         if item is self._mark:
+            print("list is empty")
             raise IndexError
         else:
             self.head = item.get_next()
-            self.head.set_previous(self._mark)
+            try:
+                self.head.set_previous(self._mark)
+            except AttributeError:
+                pass
             return item.get_data()
 
     def append(self, val):
@@ -87,18 +93,31 @@ class DoublyLinked(object):
         """Remove and returns the last value from the tail of the list."""
         cur = self.head
         if cur == self._mark:
+            print("list is empty")
             raise IndexError
         else:
             while cur.next_node != self._mark:
                 cur = cur.next_node
-            cur.prev_node.next_node = self._mark
-            return cur
+            try:
+                cur.prev_node.next_node = self._mark
+            except AttributeError:
+                print("list is empty")
+                raise IndexError
+            return cur.get_data()
 
-    def remove(self, val):
-        """Remove given node from list."""
-        target = self.search(val)
-        target.prev_node.next_node = target.next_node
-        target.next_node.prev_node = target.prev_node
+    def remove(self, value):
+        """Remove the first occurrence of value in the list."""
+        previous_node = None
+        current_node = self.head
+        while current_node.get_data() is not value:
+            previous_node = current_node
+            current_node = current_node.get_next()
+            if current_node.get_data() is None:
+                break
+        if current_node.get_data() == value:
+            previous_node.set_next(current_node.get_next())
+        else:
+            print('Not Found')
 
 
 class DoubleNode(object):

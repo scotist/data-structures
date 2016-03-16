@@ -3,12 +3,16 @@
 import pytest
 
 SIZE = [([], 0),
-        (['one', 'two', 'three', 'four'], 4)]
+        (['one', 'two', 'three', 'four'], 4),
+        (['Hello'], 1)]
 DEQUEUE = [([], IndexError),
-           (['one', 'two', 'three', 'four'], 'one')]
+           (['one', 'two', 'three', 'four'], 'one'),
+           (['one'], 'one'),
+           (['Uno'], 'Uno')]
 ENQUEUE = [([], None),
            (['one'], 'one'),
-           (['one', 'two', 'three'], 'three')]
+           (['one', 'two', 'three'], 'three'),
+           (['How', 'are', 'you', 'doing!?'], 'doing!?')]
 
 
 def test_inheritance():
