@@ -89,13 +89,21 @@ def test_remove_0():
     assert new_list.remove(new_list.search(1)) == 1
 
 
-def test_display():
+def test_display_0():
     """Test display method."""
     from linked_list import LinkedList
     new_list = LinkedList()
     new_list.insert([1, 2, 3, 4])
     new_list.display()
     assert new_list.display() == '(4, 3, 2, 1)'
+
+
+def test_display_1():
+    """Test display method."""
+    from linked_list import LinkedList
+    new_list = LinkedList()
+    new_list.display()
+    assert new_list.display() == '()'
 
 
 def test_node_creation():
