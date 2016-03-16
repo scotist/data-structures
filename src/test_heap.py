@@ -4,11 +4,24 @@
 import math
 
 
+def test_new_heap():
+    from heap import Heap
+    a_heap = Heap()
+    assert isinstance(a_heap, Heap)
+
+
 def test_push_heap():
     from heap import Heap
     new_heap = Heap([16, 14, 10, 9, 8, 7, 3])
     new_heap.push_heap(100)
     assert new_heap.heap[0] == 100
+
+
+def test_push_heap_01():
+    from heap import Heap
+    new_heap1 = Heap()
+    new_heap1.push_heap(5)
+    assert new_heap1.heap[0] == 5
 
 
 def test_pop_heap():
