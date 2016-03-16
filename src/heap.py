@@ -4,44 +4,51 @@ import math
 # heap = []
 
 
-def push_heap(heap, val):
-    heap.append(val)
-    heap_sort_toward_root(heap, 0, len(heap) - 1)
+class Heap(object):
 
+    def __init__(self, val=None):
+        self.heap = []
+        if val:
+            for item in val:
+                print(self.heap)
+                self.push_heap(item)
 
-def pop_heap(heap):
-    heap[0] = heap[len(heap) - 1]
-    heap.pop()
-    heap_sort_from_root(heap, 0)
+    def push_heap(self, val):
+        self.heap.append(val)
+        self.heap_sort_toward_root(0, len(self.heap) - 1)
 
+    def pop_heap(self):
+        self.heap[0] = self.heap[len(self.heap) - 1]
+        self.heap.pop()
+        print(self.heap)
+        self.heap_sort_from_root(0)
 
-def heap_sort_toward_root(heap, limit_index, index):
-    new = heap[index]
-    while index > limit_index:
-        parentindex = (index - 1) >> 1
-        parent = heap[parentindex]
-        if new > parent:
-            heap[index] = parent
-            index = parentindex
-            continue
-        break
-    heap[index] = new
+    def heap_sort_toward_root(self, limit_index, index):
+        new = self.heap[index]
+        while index > limit_index:
+            parentindex = (index - 1) >> 1
+            parent = self.heap[parentindex]
+            if new > parent:
+                self.heap[index] = parent
+                index = parentindex
+                continue
+            break
+        self.heap[index] = new
 
-
-def heap_sort_from_root(heap, index):
-    end = len(heap)
-    limit_index = index
-    new = heap[index]
-    childindex = (2 * index) + 1
-    while childindex < end:
-        right_index = childindex + 1
-        if right_index < end and heap[right_index] > heap[childindex]:
-            childindex = right_index
-        heap[index] = heap[childindex]
-        index = childindex
+    def heap_sort_from_root(self, index):
+        end = len(self.heap)
+        limit_index = index
+        new = self.heap[index]
         childindex = (2 * index) + 1
-    heap[index] = new
-    heap_sort_toward_root(heap, limit_index, index)
+        while childindex < end:
+            right_index = childindex + 1
+            if right_index < end and self.heap[right_index] > self.heap[childindex]:
+                childindex = right_index
+            self.heap[index] = self.heap[childindex]
+            index = childindex
+            childindex = (2 * index) + 1
+        self.heap[index] = new
+        self.heap_sort_toward_root(limit_index, index)
 
 
 # class Heap(object):
