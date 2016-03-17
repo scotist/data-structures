@@ -3,8 +3,9 @@ import math
 
 
 class Heap(object):
-
+    """Create Heap object with its methods."""
     def __init__(self, val=None):
+        """Initialize Heap with or without initial values."""
         self.heap = []
         if val:
             for item in val:
@@ -12,16 +13,21 @@ class Heap(object):
                 self.push_heap(item)
 
     def push_heap(self, val):
+        """Push value into the heap."""
         self.heap.append(val)
-        self.heap_sort_toward_root(0, len(self.heap) - 1)
+        self._heap_sort_toward_root(0, len(self.heap) - 1)
 
     def pop_heap(self):
+        """Pop the top item off the heap."""
+        if not len(self.heap):
+            raise IndexError("Your heap is empty! You cannot pop.")
         self.heap[0] = self.heap[len(self.heap) - 1]
         self.heap.pop()
         print(self.heap)
-        self.heap_sort_from_root(0)
+        self._heap_sort_from_root(0)
 
-    def heap_sort_toward_root(self, limit_index, index):
+    def _heap_sort_toward_root(self, limit_index, index):
+        """Sort from small value at the end of the heap to the root."""
         new = self.heap[index]
         while index > limit_index:
             parentindex = (index - 1) >> 1
@@ -33,7 +39,8 @@ class Heap(object):
             break
         self.heap[index] = new
 
-    def heap_sort_from_root(self, index):
+    def _heap_sort_from_root(self, index):
+        """Sort from the root to the appropriate spot on the heap."""
         end = len(self.heap)
         limit_index = index
         new = self.heap[index]
@@ -46,44 +53,4 @@ class Heap(object):
             index = childindex
             childindex = (2 * index) + 1
         self.heap[index] = new
-        self.heap_sort_toward_root(limit_index, index)
-
-
-# class Heap(object):
-#     """Make a binary heap."""
-
-#     def __init__(self, val=None):
-#         """Create heap."""
-#         self._container = Heap_Tools(val)
-
-
-#     def pop():
-#         """Pop first item off of heap."""
-
-#     def push(self, heap, val):
-#         """Push value into heap."""
-#         self.heap.append(val)
-#         if val < Heap[len(self.heap) - 1]:
-#             self._container.place_finder(val, len(self.heap - 1))
-
-
-
-# class Heap_Tools(object):
-#     """Orders list into a heap."""
-
-#     def __init__(self, val):
-#         """Initialize heap."""
-#         if isinstance(val, list):
-#             self.heap = val
-#         else:
-#             self.heap = []
-
-#     def place_finder(self, heap, index):
-#         """Puts value in correct position."""
-
-#     def parent(self, heap, i):
-#         if i == 0:
-#             return None
-#         return math.floor((i - 1) / 2)
-
-
+        self._heap_sort_toward_root(limit_index, index)
