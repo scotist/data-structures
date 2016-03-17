@@ -1,7 +1,6 @@
 # _*_ encoding: utf-8 _*_
 """Test heap.py."""
 import pytest
-import math
 
 
 def test_new_heap():
