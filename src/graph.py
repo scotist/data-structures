@@ -18,7 +18,7 @@ class Graph(object):
 
     def edges(self):
         """Return list of edges in graph."""
-        return [(), ()]
+        return [(key, item) for key in self.graph for item in self.graph[key]]
 
     def add_node(self, val):
         """Add node to graph."""
@@ -39,17 +39,33 @@ class Graph(object):
         else:
             self.graph[val].append(val2)
 
-    # def delete_node(val):
-    #     pass
+    def has_node(self, val):
+        if val in self.nodes():
+            return True
+        return False
 
-    # def delete_edge(val, val2):
-    #     pass
+    def delete_node(self, val):
+        present = False
+        for key in self.graph:
+            if key is val:
+                del self.graph[key]
+                present = True
+                break
+        if not present:
+            raise IndexError("Already not in graph")
+        for key in self.graph:
+            if val in self.graph[key]:
+                self.graph[key].remove(val)
 
-    # def has_node(val):
-    #     if node in graph:
-    #         return True
-    #     else:
-    #         return False
+    def delete_edge(self, val, val2):
+        if self.has_node(val):
+            if val2 in self.graph[val]:
+                self.graph[val].remove(val2)
+                return
+            raise IndexError("No such edge")
+        raise IndexError("Your first value is not present in the graph.")
+
+
 
     # def neighbors(val):
     #     for item in edge that is not val:
