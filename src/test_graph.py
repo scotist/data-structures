@@ -117,6 +117,6 @@ def test_adjacent_0(full_graph):
     assert full_graph.adjacent('a', 'b')
 
 
-def test_adjacent_0(full_graph):
+def test_adjacent_1(full_graph):
     """Test adjacent function with good values."""
     assert not full_graph.adjacent('a', 'c')
