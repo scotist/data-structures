@@ -40,11 +40,13 @@ class Graph(object):
             self.graph[val].append(val2)
 
     def has_node(self, val):
+        """Check to see a given value is a node in the graph."""
         if val in self.nodes():
             return True
         return False
 
     def delete_node(self, val):
+        """Delete a node from the graph."""
         present = False
         for key in self.graph:
             if key is val:
@@ -58,6 +60,7 @@ class Graph(object):
                 self.graph[key].remove(val)
 
     def delete_edge(self, val, val2):
+        """Delete an edge from the graph."""
         if self.has_node(val):
             if val2 in self.graph[val]:
                 self.graph[val].remove(val2)
@@ -66,6 +69,7 @@ class Graph(object):
         raise IndexError("Your first value is not present in the graph.")
 
     def neighbors(self, val):
+        """Return all the neighbors of given value."""
         neighbors = []
         if val not in self.graph:
             raise IndexError("not in graph")
@@ -77,8 +81,8 @@ class Graph(object):
                 neighbors.append(item)
         return neighbors
 
-
     def adjacent(self, val, val2):
+        """Check whether one value is connected to another by an edge."""
         if val not in self.graph or val2 not in self.graph:
             raise IndexError("Value not in graph.")
         edges_list = self.edges()
