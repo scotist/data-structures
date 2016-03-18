@@ -65,16 +65,23 @@ class Graph(object):
             raise IndexError("No such edge")
         raise IndexError("Your first value is not present in the graph.")
 
+    def neighbors(self, val):
+        neighbors = []
+        if val not in self.graph:
+            raise IndexError("not in graph")
+        for key in self.graph:
+            if val in self.graph[key]:
+                neighbors.append(key)
+        for item in self.graph[val]:
+            if item not in neighbors:
+                neighbors.append(item)
+        return neighbors
 
 
-    # def neighbors(val):
-    #     for item in edge that is not val:
-    #         return item
-
-    # def adjacent(val, val2):
-    #     if edge for val and val2:
-    #         return True
-    #     elif no edge for val and val2:
-    #         return False
-    #     elif val or val2 not in graph:
-    #         raise error
+    def adjacent(self, val, val2):
+        if val not in self.graph or val2 not in self.graph:
+            raise IndexError("Value not in graph.")
+        edges_list = self.edges()
+        if (val, val2) in edges_list or (val2, val) in edges_list:
+            return True
+        return False

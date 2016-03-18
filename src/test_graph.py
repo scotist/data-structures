@@ -93,3 +93,30 @@ def test_delete_edge(full_graph):
     assert sorted(full_graph.edges()) == [('a', 'b'), ('a', 'd'),
                                           ('b', 'd'), ('c', 'b'),
                                           ('c', 'd')]
+
+
+def test_neighbors(full_graph):
+    """Test neighbors function."""
+    assert sorted(full_graph.neighbors('b')) == ['a', 'c', 'd']
+
+
+def test_neighbors_1(full_graph):
+    """Test neighbors function."""
+    with pytest.raises(IndexError):
+        full_graph.neighbors('z')
+
+
+def test_adjacent(full_graph):
+    """Test adjacent function with bad values."""
+    with pytest.raises(IndexError):
+        full_graph.adjacent('y', 'z')
+
+
+def test_adjacent_0(full_graph):
+    """Test adjacent function with good values."""
+    assert full_graph.adjacent('a', 'b')
+
+
+def test_adjacent_0(full_graph):
+    """Test adjacent function with good values."""
+    assert not full_graph.adjacent('a', 'c')
