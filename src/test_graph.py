@@ -24,7 +24,16 @@ def full_graph():
     full_graph.add_edge("a", "d")
     full_graph.add_edge("b", "d")
     full_graph.add_edge("d", "a")
-    print(full_graph.graph)
+    return full_graph
+
+
+@pytest.fixture()
+def deep_cyclic_graph():
+    """Fixture that makes a deeper graph."""
+    from graph import Graph
+    full_graph = Graph()
+    full_graph.graph = {'A': ['B', 'C'], 'B': ['D', 'E'],
+                        'C': ['D', 'E'], 'D': ['E'], 'E': ['A']}
     return full_graph
 
 
@@ -56,6 +65,7 @@ def test_add_edge():
 
 def test_edges(full_graph):
     """Test edges function."""
+    print(full_graph.graph)
     assert sorted(full_graph.edges()) == [('a', 'b'), ('a', 'd'),
                                           ('b', 'd'), ('c', 'b'),
                                           ('c', 'd'), ('d', 'a')]
@@ -121,3 +131,44 @@ def test_adjacent_0(full_graph):
 def test_adjacent_1(full_graph):
     """Test adjacent function with good values."""
     assert not full_graph.adjacent('a', 'c')
+
+
+def test_depth_traversal(deep_cyclic_graph):
+    """Test depth-first traversal method on a cyclic graph."""
+    assert deep_cyclic_graph.depth_traversal('A') == ['A', 'B', 'D', 'E', 'C']
+
+
+def test_depth_traversal_01(my_graph):
+    """Test depth-first traversal method on a non-cyclic graph."""
+    my_graph.add_edge("monkeybutler", "penguinbutler")
+    assert my_graph.depth_traversal('monkeybutler') == ['monkeybutler',
+                                                        'penguinbutler']
+
+
+def test_depth_traversal_02():
+    """Test depth-first traversal method on an empty graph."""
+    from graph import Graph
+    empty_graph = Graph()
+    assert empty_graph.depth_traversal('A') == []
+    assert empty_graph.depth_traversal('') == []
+
+
+def test_breadth_traversal(deep_cyclic_graph):
+    """Test breadth-first traversal method on a cyclic graph."""
+    assert deep_cyclic_graph.breadth_traversal('A') == ['A', 'B', 'C', 'D',
+                                                        'E']
+
+
+def test_breadth_traversal_01(my_graph):
+    """Test breadth-first traversal method on a non-cyclic graph."""
+    my_graph.add_edge("monkeybutler", "penguinbutler")
+    assert my_graph.breadth_traversal('monkeybutler') == ['monkeybutler',
+                                                          'penguinbutler']
+
+
+def test_breadth_traversal_02():
+    """Test depth-first traversal method on an empty graph."""
+    from graph import Graph
+    empty_graph = Graph()
+    assert empty_graph.breadth_traversal('A') == []
+    assert empty_graph.breadth_traversal('') == []
