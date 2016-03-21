@@ -13,3 +13,11 @@ paren_aj.py is AJ's implementation of a function to evaluate proper parenthetica
 ______________
 
 parenthetics.py implements the same function as paren_aj.py, but with a different approach by Michael. There are tests for both.
+
+
+______________
+
+Sources:
+
+Our graph traversal functions adapt the algorithms found at:
+http://code.activestate.com/recipes/576723-dfs-and-bfs-graph-traversal/
