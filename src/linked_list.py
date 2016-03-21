@@ -26,7 +26,6 @@ class LinkedList(object):
         """Pop the first value off the head of the list and return it."""
         item = self.head
         if item is self._mark:
-            print("list is empty")
             raise IndexError
         else:
             self.head = item.get_next()
@@ -47,7 +46,6 @@ class LinkedList(object):
         while current_node.get_data() is not val:
             current_node = current_node.get_next()
             if current_node is self._mark:
-                print("list is empty")
                 raise IndexError
         return current_node
         print("Found it!")

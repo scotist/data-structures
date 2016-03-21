@@ -1,5 +1,7 @@
 # _*_ encoding: utf-8 _*_
 """Make a python graph."""
+from stack import Stack
+from queue import Queue
 
 
 class Graph(object):
@@ -89,3 +91,55 @@ class Graph(object):
         if (val, val2) in edges_list or (val2, val) in edges_list:
             return True
         return False
+
+    def breadth_traversal(self, start):
+        """Breadth-first traversal of our graph."""
+        path = []
+        breadth_queue = Queue()
+        breadth_queue.enqueue(start)
+        try:
+            while start in self.graph:
+                current = breadth_queue.dequeue()
+                if current not in path:
+                    path = path + [current]
+                    for node in self.graph[current]:
+                        breadth_queue.enqueue(node)
+            return path
+        except (IndexError, KeyError):
+            return path
+
+    def depth_traversal(self, start):
+        """Depth-first traversal of our graph."""
+        path = []
+        depth_stack = Stack()
+        depth_stack.push(start)
+        try:
+            while start in self.graph:
+                current = depth_stack.pop()
+                if current not in path:
+                    path = path + [current]
+                    for node in self.graph[current][::-1]:
+                        depth_stack.push(node)
+            return path
+        except (IndexError, KeyError):
+            return path
+
+
+if __name__ == '__main__':
+    from test_graph import my_graph, deep_cyclic_graph
+    print('Given the following cyclic graph:')
+    print(deep_cyclic_graph().graph)
+    print('The depth traversal will appear as follows:')
+    print(deep_cyclic_graph().depth_traversal('A'))
+    print('The breadth traversal will appear as follows:')
+    print(deep_cyclic_graph().breadth_traversal('A'))
+    print('On the other hand, given this short non-cyclic graph:')
+    this_graph = my_graph()
+    this_graph.add_edge("monkeybutler", "penguinbutler")
+    this_graph.add_edge("penguinbutler", "koalabutler")
+    this_graph.add_edge("monkeybutler", "platypusbutler")
+    print(this_graph.graph)
+    print('The depth traversal will appear as follows:')
+    print(this_graph.depth_traversal('monkeybutler'))
+    print('The breadth traversal will appear as follows:')
+    print(this_graph.breadth_traversal('monkeybutler'))

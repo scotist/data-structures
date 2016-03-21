@@ -31,7 +31,6 @@ class DoublyLinked(object):
                 raise IndexError
                 break
         return current_node
-        print("Found it!")
 
     def insert(self, val):
         """Insert value at head of list."""
@@ -66,7 +65,6 @@ class DoublyLinked(object):
         """Pop the first value off the head of the list and return it."""
         item = self.head
         if item is self._mark:
-            print("list is empty")
             raise IndexError
         else:
             self.head = item.get_next()
@@ -93,7 +91,6 @@ class DoublyLinked(object):
         """Remove and returns the last value from the tail of the list."""
         cur = self.head
         if cur == self._mark:
-            print("list is empty")
             raise IndexError
         else:
             while cur.next_node != self._mark:
@@ -101,7 +98,6 @@ class DoublyLinked(object):
             try:
                 cur.prev_node.next_node = self._mark
             except AttributeError:
-                print("list is empty")
                 raise IndexError
             return cur.get_data()
 
