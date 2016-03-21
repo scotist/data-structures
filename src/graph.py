@@ -102,7 +102,6 @@ class Graph(object):
                 current = breadth_queue.dequeue()
                 if current not in path:
                     path = path + [current]
-                    # breadth_queue.enqueue(start)
                     for node in self.graph[current]:
                         breadth_queue.enqueue(node)
             return path
@@ -144,4 +143,3 @@ if __name__ == '__main__':
     print(this_graph.depth_traversal('monkeybutler'))
     print('The breadth traversal will appear as follows:')
     print(this_graph.breadth_traversal('monkeybutler'))
-
