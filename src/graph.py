@@ -61,7 +61,7 @@ class Graph(object):
             if val in self.graph[key]:
                 self.graph[key].remove(val)
 
-    def delete_edge(self, val, val2):
+    def delete_edge(self, val, val2, weight=0):
         """Delete an edge from the graph."""
         if self.has_node(val):
             if val2 in self.graph[val]:
