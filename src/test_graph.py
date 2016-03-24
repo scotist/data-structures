@@ -68,9 +68,15 @@ def test_add_edge():
 def test_edges(full_graph):
     """Test edges function."""
     print(full_graph.graph)
-    assert sorted(full_graph.edges()) == [{('a', 'b'): 0}, {('a', 'd'): 0},
-                                          {('b', 'd'): 0}, {('c', 'b'): 0},
-                                          {('c', 'd'): 0}, {('d', 'a'): 0}]
+    answers = [{('a', 'b'): 0},
+               {('a', 'd'): 0},
+               {('b', 'd'): 0},
+               {('c', 'b'): 0},
+               {('c', 'd'): 0},
+               {('d', 'a'): 0}]
+    for edge in full_graph.edges():
+        answers.remove(edge)
+    assert answers == []
 
 
 def test_has_node(full_graph):
@@ -100,12 +106,11 @@ def test_delete_node_1():
         empty_graph.delete_node('a')
 
 
-# def test_delete_edge(full_graph):
-#     """Test delete edge function."""
-#     full_graph.delete_edge('d', 'a')
-#     assert sorted(full_graph.edges()) == [('a', 'b'), ('a', 'd'),
-#                                           ('b', 'd'), ('c', 'b'),
-#                                           ('c', 'd')]
+def test_delete_edge(full_graph):
+    """Test delete edge function."""
+    assert full_graph.adjacent('d', 'a')
+    full_graph.delete_edge('d', 'a')
+    assert not full_graph.adjacent('d', 'a')
 
 
 def test_neighbors(full_graph):
