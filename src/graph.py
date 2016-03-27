@@ -2,7 +2,8 @@
 """Make a python graph."""
 from stack import Stack
 from queue import Queue
-
+from itertools import count
+import heapq
 
 class Graph(object):
     """Implement a directed graph."""
@@ -128,6 +129,21 @@ class Graph(object):
         except (IndexError, KeyError):
             return path
 
+    def dijkstra(self, start, end):
+            unique = count()
+            visited = []
+            heap = [(0, unique, start, [start])]
+            while heap:
+                weight, secondary_num, node, path = heapq.heappop(heap)
+                if node == end:
+                    return path[::-1], weight
+                if node not in visited:
+                    visited.append(node)
+                    for neighbor, next_weight in self.graph[node].items():
+                        heapq.heappush(heap, (weight + next_weight,
+                                              next(unique),
+                                              neighbor,
+                                              [neighbor] + path))
 
 if __name__ == '__main__':
     from test_graph import my_graph, deep_cyclic_graph

@@ -32,11 +32,19 @@ def deep_cyclic_graph():
     """Fixture that makes a deeper graph."""
     from graph import Graph
     full_graph = Graph()
-    # full_graph.graph = {'A': ['B', 'C'], 'B': ['D', 'E'],
-    #                     'C': ['D', 'E'], 'D': ['E'], 'E': ['A']}
     full_graph.graph = {'A': {'B': 0, 'C': 0}, 'B': {'D': 0, 'E': 0},
                         'C': {'D': 0, 'E': 0}, 'D': {'E': 0}, 'E': {'A': 0}}
     return full_graph
+
+
+@pytest.fixture()
+def weighted_graph():
+    from graph import Graph
+    weighted_graph = Graph()
+    weighted_graph.graph = {'A': {'B': 2, 'C': 3, 'G': 1}, 'B': {'D': 1, 'E': 1},
+                            'C': {'D': 3, 'E': 2}, 'D': {'E': 4},
+                            'E': {'A': 2, 'F': 3}, 'F': {}, 'G': {'A': 3}}
+    return weighted_graph
 
 
 def test_init(my_graph):
@@ -184,3 +192,19 @@ def test_breadth_traversal_02():
     empty_graph = Graph()
     assert empty_graph.breadth_traversal('A') == []
     assert empty_graph.breadth_traversal('') == []
+
+
+def test_dijkstra_0(weighted_graph):
+    """Test Dijkstra's algorithm."""
+    print(weighted_graph.graph)
+    assert weighted_graph.dijkstra('A', 'F') == (['A', 'B', 'E', 'F'], 6)
+
+
+def test_dijkstra_1(weighted_graph):
+    """Test Dijkstra's where cyclical loop is possible."""
+    assert weighted_graph.dijkstra('G', 'D') == (['G', 'A', 'B', 'D'], 6)
+
+
+def test_dijkstra_2(weighted_graph):
+    """Test Dijkstra's where a route is not possible at all."""
+    assert weighted_graph.dijkstra('G', 'X') is None
