@@ -105,4 +105,10 @@ class Bst(object):
 
     def balance(self):
         """Return number expressing balance or lack thereof of tree."""
-        return self.left_child.depth() - self.right_child.depth()
+        left_depth = 0
+        right_depth = 0
+        if self.left_child is not None:
+            left_depth = self.left_child.depth()
+        if self.right_child is not None:
+            right_depth = self.right_child.depth()
+        return left_depth - right_depth

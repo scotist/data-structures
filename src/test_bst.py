@@ -6,16 +6,28 @@ import pytest
 
 @pytest.fixture
 def empty_instance():
+    """Empty tree fixture."""
     tree = Bst()
     return tree
 
 
 @pytest.fixture
 def instance():
+    """Full tree fixture."""
     tree = Bst()
     for n in range(20):
         tree.insert(n)
     return tree
+
+
+@pytest.fixture
+def instance2():
+    """Fun tree fixture."""
+    fun_tree = Bst()
+    insertions = [7, 6, 10, 5, 20, 11]
+    for fun in insertions:
+        fun_tree.insert(fun)
+    return fun_tree
 
 
 def test_new_tree(instance):
@@ -67,3 +79,31 @@ def test_depth(instance):
 def test_depth_empty(empty_instance):
     """Test depth method on empty tree."""
     assert empty_instance.depth() == 0
+
+
+def test_depth_fun(instance2):
+    """Test depth method on more complex tree."""
+    assert instance2.depth() == 4
+
+
+def test_balance(instance2):
+    """Test balance method on right-unbalanced tree."""
+    assert instance2.balance() == -1
+
+
+def test_balance2(instance2):
+    """Test balance method on balanced tree."""
+    instance2.insert(3)
+    assert instance2.balance() == 0
+
+
+def test_balance3(instance2):
+    """Test balance method on left-unbalanced tree."""
+    instance2.insert(3)
+    instance2.insert(2)
+    assert instance2.balance() == 1
+
+
+def test_balance4(instance):
+    """Test balance method on extremely-unbalanced tree."""
+    assert instance.balance() == - 19
