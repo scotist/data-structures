@@ -94,6 +94,8 @@ class Bst(object):
 
     def depth(self):
         """Return number of levels in the tree."""
+        if self.value is None:
+            return 0
         if not self.left_child and not self.right_child:
             return 1
         depths = [child.depth()
