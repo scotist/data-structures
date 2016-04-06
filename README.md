@@ -1,3 +1,5 @@
+[![Travis](https://travis-ci.org/scotist/data-structures.svg?branch=master)](https://travis-ci.org/scotist/data-structures.svg?branch=master)
+
 # linked-list
 Implements a linked list with python
 
