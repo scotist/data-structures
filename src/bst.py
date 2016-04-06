@@ -98,4 +98,6 @@ class Bst(object):
                   if child is not None]
         return max(depths) + 1
 
-
+    def balance(self):
+        """Return number expressing balance or lack thereof of tree."""
+        return self.left_child.depth() - self.right_child.depth()
