@@ -41,16 +41,19 @@ class Bst(object):
             return
         if self.value is None:
             self.value = value
-        if value > self.value:
-            if not self.right_child:
-                self.right_child = Bst(parent=self, value=value)
-            else:
-                self.right_child.insert(value)
-        elif value < self.value:
-            if not self.left_child:
-                self.left_child = Bst(parent=self, value=value)
-            else:
-                self.left_child.insert(value)
+        try:
+            if value > self.value:
+                if not self.right_child:
+                    self.right_child = Bst(parent=self, value=value)
+                else:
+                    self.right_child.insert(value)
+            elif value < self.value:
+                if not self.left_child:
+                    self.left_child = Bst(parent=self, value=value)
+                else:
+                    self.left_child.insert(value)
+        except TypeError:
+            raise TypeError("Cannot mix types in a binary search tree.")
 
     def contains(self, value):
         """Return True if value in tree."""

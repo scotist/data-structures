@@ -35,6 +35,15 @@ def test_new_tree(instance):
     assert isinstance(instance, Bst)
 
 
+def test_new_empty_tree(empty_instance):
+    """Test that an empty tree is still a tree."""
+    assert all([
+        empty_instance.value is None,
+        empty_instance.parent is None,
+        empty_instance.left_child is None,
+        empty_instance.right_child is None])
+
+
 def test_insert(empty_instance):
     """Test insert method on empty tree."""
     empty_instance.insert(0)
@@ -48,6 +57,18 @@ def test_insert_many(empty_instance):
         empty_instance.insert(chump)
     for chump in insertions:
         assert empty_instance.contains(chump)
+
+
+def test_insert_fail(instance):
+    """Test insert method with badly mixed values."""
+    with pytest.raises(TypeError):
+        instance.insert("This can't go here!")
+
+
+def test_insert_fail_2(instance):
+    """Test insert method with None value."""
+    with pytest.raises(TypeError):
+        instance.insert(None)
 
 
 def test_contains(instance):
