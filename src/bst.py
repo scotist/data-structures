@@ -9,7 +9,6 @@ class Bst(object):
                  right_child=None):
         """Init Tree."""
         self.value = value
-        self._list = set()
         self.parent = parent
         self.left_child = left_child
         self.right_child = right_child
@@ -38,9 +37,8 @@ class Bst(object):
 
     def insert(self, value):
         """Insert value into tree if not present."""
-        if value in self._list:
+        if self.contains(value):
             return
-        self._list.add(value)
         if self.value is None:
             self.value = value
         if value > self.value:
@@ -56,11 +54,26 @@ class Bst(object):
 
     def contains(self, value):
         """Return True if value in tree."""
-        return value in self._list
+        if self.value == value:
+            return True
+        left_contains = False
+        right_contains = False
+        if self.left_child is not None:
+            left_contains = self.left_child.contains(value)
+        if self.right_child is not None:
+            right_contains = self.right_child.contains(value)
+        return left_contains or right_contains
 
     def size(self):
         """Return size of tree."""
-        return len(self._list)
+        if self.value is None:
+            return 0
+        if not self.left_child and not self.right_child:
+            return 1
+        sizes = [child.size()
+                 for child in (self.left_child, self.right_child)
+                 if child is not None]
+        return sum(sizes) + 1
 
     def depth(self):
         """Return number of levels in the tree."""
