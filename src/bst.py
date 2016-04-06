@@ -35,7 +35,8 @@
 class Bst(object):
     """Implement Binary Search Tree."""
 
-    def __init__(self, value=None, parent=None, left_child=None, right_child=None):
+    def __init__(self, value=None, parent=None, left_child=None,
+                 right_child=None):
         """Init Tree."""
         self.value = value
         self._list = set()
@@ -68,8 +69,8 @@ class Bst(object):
     def insert(self, value):
         """Insert value into tree if not present."""
         if value in self._list:
-            return value
-        self._list.append(value)
+            return
+        self._list.add(value)
         if self.value is None:
             self.value = value
         if value > self.value:
