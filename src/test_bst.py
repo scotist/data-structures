@@ -77,7 +77,7 @@ def test_contains(instance):
         assert instance.contains(n)
 
 
-def test_contains_2(instance):
+def test_contains_false(instance):
     """Test false example for contains method."""
     assert not instance.contains(1000)
 
@@ -87,7 +87,7 @@ def test_size(instance):
     assert instance.size() == 20
 
 
-def test_size_1(empty_instance):
+def test_size_empty(empty_instance):
     """Test size method on empty tree."""
     assert empty_instance.size() == 0
 
@@ -112,19 +112,19 @@ def test_balance(instance2):
     assert instance2.balance() == -1
 
 
-def test_balance2(instance2):
+def test_balance_balanced(instance2):
     """Test balance method on balanced tree."""
     instance2.insert(3)
     assert instance2.balance() == 0
 
 
-def test_balance3(instance2):
+def test_balance_left(instance2):
     """Test balance method on left-unbalanced tree."""
     instance2.insert(3)
     instance2.insert(2)
     assert instance2.balance() == 1
 
 
-def test_balance4(instance):
+def test_balance_extreme_right(instance):
     """Test balance method on extremely-unbalanced tree."""
     assert instance.balance() == - 19
