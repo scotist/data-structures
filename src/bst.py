@@ -1,7 +1,6 @@
 # _*_ encoding: utf-8 _*_
 """Binary Search Tree Implementation."""
 
-
 # class Node(object):
 #     """Make node for binary search tree."""
 
@@ -52,7 +51,8 @@ class Bst(object):
     @left_child.setter
     def left_child(self, other_node):
         self._left_child = other_node
-        other_node.parent = self
+        if other_node is not None:
+            other_node.parent = self
 
     @property
     def right_child(self):
@@ -62,7 +62,8 @@ class Bst(object):
     @right_child.setter
     def right_child(self, other_node):
         self._right_child = other_node
-        other_node.parent = self
+        if other_node is not None:
+            other_node.parent = self
 
     def insert(self, value):
         """Insert value into tree if not present."""
@@ -94,7 +95,8 @@ class Bst(object):
         """Return number of levels in the tree."""
         if not self.left_child and not self.right_child:
             return 1
-        depths = [child.depth() for child in self.left_child, self.right_child
+        depths = [child.depth()
+                  for child in (self.left_child, self.right_child)
                   if child is not None]
         return max(depths) + 1
 
