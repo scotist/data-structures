@@ -15,6 +15,13 @@ ______________
 parenthetics.py implements the same function as paren_aj.py, but with a different approach by Michael. There are tests for both.
 
 
+
+______________
+
+
+The binary search tree and tests were written by Michael Sullivan and Will Weatherford. We did a kickass job.
+
+
 ______________
 
 Sources:
