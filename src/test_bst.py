@@ -2,6 +2,7 @@
 """Tests for binary search tree."""
 from bst import Bst
 import pytest
+import types
 
 
 @pytest.fixture
@@ -163,3 +164,17 @@ def test_post_order_empty(empty_instance):
 def test_breadth_first(instance2):
     """Test breadth-first traversal method."""
     assert list(instance2.breadth_first()) == [7, 6, 10, 5, 20, 11]
+
+
+def test_breadth_first_empty(empty_instance):
+    """Test breadth_first traversal on empty tree."""
+    assert list(empty_instance.breadth_first()) == []
+
+
+def test_generators(instance):
+    """Test traversal methods yield generators."""
+    assert all([isinstance(method(), types.GeneratorType) for method in
+               [instance.pre_order,
+                instance.post_order,
+                instance.in_order,
+                instance.breadth_first]])
