@@ -1,5 +1,7 @@
 # _*_ encoding: utf-8 _*_
 """Binary Search Tree Implementation."""
+import random
+import time
 
 
 class Bst(object):
@@ -98,3 +100,22 @@ class Bst(object):
         if self.right_child is not None:
             right_depth = self.right_child.depth()
         return left_depth - right_depth
+
+
+if __name__ == "__main__":
+    values = random.sample(range(1000), 100)
+    big_tree = Bst()
+    for val in values:
+        big_tree.insert(val)
+    search_val = random.choice(values)
+
+    timescores = []
+    for n in range(1000):
+        start = time.time()
+        big_tree.contains(search_val)
+        delta = time.time() - start
+        timescores.append((delta, search_val))
+
+    timescores.sort()
+    print("The fastest search took {} seconds for {}".format(*timescores[0]))
+    print("The slowest search took {} seconds for {}".format(*timescores[-1]))
