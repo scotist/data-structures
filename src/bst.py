@@ -4,6 +4,7 @@ from queue import Queue
 import random
 import time
 
+
 class Bst(object):
     """Implement Binary Search Tree."""
 
