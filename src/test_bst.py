@@ -159,6 +159,7 @@ def test_post_order_empty(empty_instance):
     """Test post-order traversal on empty tree."""
     assert list(empty_instance.post_order()) == []
 
-# def test_breadth_first(instance2):
-#     """Test breadth-first traversal method."""
-#     assert False
+
+def test_breadth_first(instance2):
+    """Test breadth-first traversal method."""
+    assert list(instance2.breadth_first()) == [7, 6, 10, 5, 20, 11]

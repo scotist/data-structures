@@ -1,6 +1,6 @@
 # _*_ encoding: utf-8 _*_
 """Binary Search Tree Implementation."""
-
+from queue import Queue
 
 class Bst(object):
     """Implement Binary Search Tree."""
@@ -133,4 +133,15 @@ class Bst(object):
             yield self.value
 
     def breadth_first(self):
-        pass
+        """Traverse tree with breadth-first traversal."""
+        q = Queue()
+        q.enqueue(self)
+        while q.size() > 0:
+            print(q.size())
+            tree = q.dequeue()
+            if tree.value is not None:
+                yield tree.value
+            if tree.left_child is not None:
+                q.enqueue(tree.left_child)
+            if tree.right_child is not None:
+                q.enqueue(tree.right_child)
