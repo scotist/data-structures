@@ -21,7 +21,7 @@ parenthetics.py implements the same function as paren_aj.py, but with a differen
 ______________
 
 
-The binary search tree and tests were written by Michael Sullivan and Will Weatherford. We did a kickass job.
+The binary search tree and tests were written by Michael Sullivan and Will Weatherford. We did a kickass job. It includes three depth-first traversal methods: in-order, pre-order, and post order; and breadth-first traversal.
 
 
 ______________
