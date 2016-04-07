@@ -1,6 +1,8 @@
 # _*_ encoding: utf-8 _*_
 """Binary Search Tree Implementation."""
 from queue import Queue
+import random
+import time
 
 class Bst(object):
     """Implement Binary Search Tree."""
@@ -145,3 +147,22 @@ class Bst(object):
                 q.enqueue(tree.left_child)
             if tree.right_child is not None:
                 q.enqueue(tree.right_child)
+
+
+if __name__ == "__main__":
+    values = random.sample(range(1000), 100)
+    big_tree = Bst()
+    for val in values:
+        big_tree.insert(val)
+    search_val = random.choice(values)
+
+    timescores = []
+    for n in range(1000):
+        start = time.time()
+        big_tree.contains(search_val)
+        delta = time.time() - start
+        timescores.append((delta, search_val))
+
+    timescores.sort()
+    print("The fastest search took {} seconds for {}".format(*timescores[0]))
+    print("The slowest search took {} seconds for {}".format(*timescores[-1]))
