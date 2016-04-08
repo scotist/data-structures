@@ -31,11 +31,6 @@ def instance2():
     return fun_tree
 
 
-def test_new_tree(instance):
-    """Test that our tree is a tree."""
-    assert isinstance(instance, Bst)
-
-
 def test_new_empty_tree(empty_instance):
     """Test that an empty tree is still a tree."""
     assert all([
