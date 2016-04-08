@@ -178,7 +178,6 @@ class Bst(object):
                 self.insert(value)
 
 
-
 if __name__ == "__main__":
     values = random.sample(range(1000), 100)
     big_tree = Bst()

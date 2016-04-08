@@ -204,10 +204,12 @@ def test_size_after_delete(deleteable_instance):
 def test_balance_after_delete(deleteable_instance):
     """Test that the tree is not worse balanced after deletion."""
     instance, other_values, delete_value = deleteable_instance
-    balance = instance.balance()
-    instance.delete(delete_value)
-    new_balance = instance.balance()
-    assert abs(new_balance) <= abs(balance)
+    deletable = instance._search(delete_value)
+    if all([deletable.left_child, deletable.right_child]):
+        balance = instance.balance()
+        instance.delete(delete_value)
+        new_balance = instance.balance()
+        assert abs(new_balance) <= abs(balance)
 
 
 def test_contains_undeleted(deleteable_instance):
