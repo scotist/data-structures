@@ -3,6 +3,7 @@
 from bst import Bst
 import pytest
 import types
+import random
 
 
 @pytest.fixture
@@ -29,6 +30,15 @@ def instance2():
     for fun in insertions:
         fun_tree.insert(fun)
     return fun_tree
+
+
+@pytest.fixture
+def deleteable_instance(instance2):
+    """Fixture for deletion."""
+    insertions = [7, 6, 10, 5, 20, 11]
+    delete_value = random.choice(insertions)
+    insertions.remove(delete_value)
+    return (instance2, insertions, delete_value)
 
 
 def test_new_empty_tree(empty_instance):
@@ -173,3 +183,55 @@ def test_generators(instance):
                 instance.post_order,
                 instance.in_order,
                 instance.breadth_first]])
+
+
+def test_delete_contains(deleteable_instance):
+    """Test that tree does not contain deleted value after delete."""
+    instance, other_values, delete_value = deleteable_instance
+    instance.delete(delete_value)
+    assert not instance.contains(delete_value)
+
+
+def test_size_after_delete(deleteable_instance):
+    """Test that tree is one smaller after deletion."""
+    instance, other_values, delete_value = deleteable_instance
+    size = instance.size()
+    instance.delete(delete_value)
+    new_size = instance.size()
+    assert new_size == len(other_values) == size - 1
+
+
+def test_balance_after_delete(deleteable_instance):
+    """Test that the tree is not worse balanced after deletion."""
+    instance, other_values, delete_value = deleteable_instance
+    balance = instance.balance()
+    instance.delete(delete_value)
+    new_balance = instance.balance()
+    assert abs(new_balance) <= abs(balance)
+
+
+def test_contains_undeleted(deleteable_instance):
+    """Test that tree still contains all undeleted values."""
+    instance, other_values, delete_value = deleteable_instance
+    instance.delete(delete_value)
+    assert all([instance.contains(value) for value in other_values])
+
+
+def test_delete_not_contained(instance2):
+    """Test that delete leaves the list intact if value not in tree."""
+    first_balance = instance2.balance()
+    instance2.delete(999)
+    assert instance2.balance() == first_balance
+
+
+def test_delete_not_contained_2(instance2):
+    """Test that delete leaves the list intact if value not in tree."""
+    first_size = instance2.size()
+    instance2.delete(999)
+    assert instance2.size() == first_size
+
+
+def test_delete_empty(empty_instance):
+    """Test delete on empty tree."""
+    assert empty_instance.delete(999) is None
+
