@@ -2,6 +2,7 @@
 """Tests for binary search tree."""
 from bst import Bst
 import pytest
+import types
 
 
 @pytest.fixture
@@ -28,11 +29,6 @@ def instance2():
     for fun in insertions:
         fun_tree.insert(fun)
     return fun_tree
-
-
-def test_new_tree(instance):
-    """Test that our tree is a tree."""
-    assert isinstance(instance, Bst)
 
 
 def test_new_empty_tree(empty_instance):
@@ -128,3 +124,52 @@ def test_balance_left(instance2):
 def test_balance_extreme_right(instance):
     """Test balance method on extremely-unbalanced tree."""
     assert instance.balance() == - 19
+
+
+def test_in_order(instance2):
+    """Test in-order traversal method."""
+    assert list(instance2.in_order()) == [5, 6, 7, 10, 11, 20]
+
+
+def test_in_order_empty(empty_instance):
+    """Test in-order traversal on empty tree."""
+    assert list(empty_instance.in_order()) == []
+
+
+def test_pre_order(instance2):
+    """Test pre-order traversal method."""
+    assert list(instance2.pre_order()) == [7, 6, 5, 10, 20, 11]
+
+
+def test_pre_order_empty(empty_instance):
+    """Test pre-order traversal on empty tree."""
+    assert list(empty_instance.pre_order()) == []
+
+
+def test_post_order(instance2):
+    """Test post-order traversal method."""
+    assert list(instance2.post_order()) == [5, 6, 11, 20, 10, 7]
+
+
+def test_post_order_empty(empty_instance):
+    """Test post-order traversal on empty tree."""
+    assert list(empty_instance.post_order()) == []
+
+
+def test_breadth_first(instance2):
+    """Test breadth-first traversal method."""
+    assert list(instance2.breadth_first()) == [7, 6, 10, 5, 20, 11]
+
+
+def test_breadth_first_empty(empty_instance):
+    """Test breadth_first traversal on empty tree."""
+    assert list(empty_instance.breadth_first()) == []
+
+
+def test_generators(instance):
+    """Test traversal methods yield generators."""
+    assert all([isinstance(method(), types.GeneratorType) for method in
+               [instance.pre_order,
+                instance.post_order,
+                instance.in_order,
+                instance.breadth_first]])

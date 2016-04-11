@@ -1,5 +1,7 @@
 # _*_ encoding: utf-8 _*_
 """Binary Search Tree Implementation."""
+
+from queue import Queue
 import random
 import time
 
@@ -100,6 +102,53 @@ class Bst(object):
         if self.right_child is not None:
             right_depth = self.right_child.depth()
         return left_depth - right_depth
+
+    def in_order(self):
+        """Traverse tree with in-order traversal."""
+        if self.left_child is not None:
+            for item in self.left_child.in_order():
+                yield item
+        if self.value is not None:
+            yield self.value
+        if self.right_child is not None:
+            for item in self.right_child.in_order():
+                yield item
+
+    def pre_order(self):
+        """Traverse tree with pre-order traversal."""
+        if self.value is not None:
+            yield self.value
+        if self.left_child is not None:
+            for item in self.left_child.pre_order():
+                yield item
+        if self.right_child is not None:
+            for item in self.right_child.pre_order():
+                yield item
+
+    def post_order(self):
+        """Traverse tree with post-order traversal."""
+        if self.left_child is not None:
+            for item in self.left_child.post_order():
+                yield item
+        if self.right_child is not None:
+            for item in self.right_child.post_order():
+                yield item
+        if self.value is not None:
+            yield self.value
+
+    def breadth_first(self):
+        """Traverse tree with breadth-first traversal."""
+        q = Queue()
+        q.enqueue(self)
+        while q.size() > 0:
+            print(q.size())
+            tree = q.dequeue()
+            if tree.value is not None:
+                yield tree.value
+            if tree.left_child is not None:
+                q.enqueue(tree.left_child)
+            if tree.right_child is not None:
+                q.enqueue(tree.right_child)
 
 
 if __name__ == "__main__":
