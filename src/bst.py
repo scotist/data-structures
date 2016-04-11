@@ -73,15 +73,6 @@ class Bst(object):
     def contains(self, value):
         """Return True if value in tree."""
         return bool(self._search(value))
-        # if self.value == value:
-        #     return True
-        # left_contains = False
-        # right_contains = False
-        # if self.left_child is not None:
-        #     left_contains = self.left_child.contains(value)
-        # if self.right_child is not None:
-        #     right_contains = self.right_child.contains(value)
-        # return left_contains or right_contains
 
     def size(self):
         """Return size of tree."""
@@ -187,8 +178,10 @@ class Bst(object):
             self.left_child = largest_child.left_child
             self.value = largest_child.value
             self.parent = None
+            del largest_child
             for value in insertable.breadth_first():
                 self.insert(value)
+            del insertable
 
 
 if __name__ == "__main__":
