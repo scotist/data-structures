@@ -39,6 +39,12 @@ class Bst(object):
         if other_node is not None:
             other_node.parent = self
 
+    def _children(self):
+        """Yield any children which are not None."""
+        for child in (self.left_child, self.right_child):
+            if child is not None:
+                yield child
+
     def insert(self, value):
         """Insert value into tree if not present."""
         if self.contains(value):
@@ -59,17 +65,21 @@ class Bst(object):
         except TypeError:
             raise TypeError("Cannot mix types in a binary search tree.")
 
+    def _search(self, value):
+        """Search for value in tree."""
+        if self.value == value:
+            return self
+        left_contains = None
+        right_contains = None
+        if self.left_child is not None:
+            left_contains = self.left_child._search(value)
+        if self.right_child is not None:
+            right_contains = self.right_child._search(value)
+        return left_contains or right_contains
+
     def contains(self, value):
         """Return True if value in tree."""
-        if self.value == value:
-            return True
-        left_contains = False
-        right_contains = False
-        if self.left_child is not None:
-            left_contains = self.left_child.contains(value)
-        if self.right_child is not None:
-            right_contains = self.right_child.contains(value)
-        return left_contains or right_contains
+        return bool(self._search(value))
 
     def size(self):
         """Return size of tree."""
@@ -149,6 +159,36 @@ class Bst(object):
                 q.enqueue(tree.left_child)
             if tree.right_child is not None:
                 q.enqueue(tree.right_child)
+
+    def delete(self, value):
+        """Delete value from tree."""
+        deletable = self._search(value)
+        if not deletable:
+            return
+        if deletable.parent is not None:
+            if deletable.parent.left_child == deletable:
+                deletable.parent.left_child = None
+            elif deletable.parent.right_child == deletable:
+                deletable.parent.right_child = None
+            deletable.parent = None
+            for value in deletable.breadth_first():
+                if value != deletable.value:
+                    self.insert(value)
+        else:
+            if self.right_child.size() > self.left_child.size():
+                largest_child = self.right_child
+                insertable = self.left_child
+            else:
+                largest_child = self.left_child
+                insertable = self.right_child
+            self.right_child = largest_child.right_child
+            self.left_child = largest_child.left_child
+            self.value = largest_child.value
+            self.parent = None
+            del largest_child
+            for value in insertable.breadth_first():
+                self.insert(value)
+            del insertable
 
 
 if __name__ == "__main__":

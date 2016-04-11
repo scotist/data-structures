@@ -3,6 +3,7 @@
 from bst import Bst
 import pytest
 import types
+import random
 
 
 @pytest.fixture
@@ -25,10 +26,19 @@ def instance():
 def instance2():
     """Fun tree fixture."""
     fun_tree = Bst()
-    insertions = [7, 6, 10, 5, 20, 11]
+    insertions = [11, 17, 9, 10, 8, 7, 4, 12, 19, 18]
     for fun in insertions:
         fun_tree.insert(fun)
     return fun_tree
+
+
+@pytest.fixture
+def deleteable_instance(instance2):
+    """Fixture for deletion."""
+    insertions = [11, 17, 9, 10, 8, 7, 4, 12, 19, 18]
+    delete_value = random.choice(insertions)
+    insertions.remove(delete_value)
+    return (instance2, insertions, delete_value)
 
 
 def test_new_empty_tree(empty_instance):
@@ -100,35 +110,37 @@ def test_depth_empty(empty_instance):
 
 def test_depth_fun(instance2):
     """Test depth method on more complex tree."""
-    assert instance2.depth() == 4
-
-
-def test_balance(instance2):
-    """Test balance method on right-unbalanced tree."""
-    assert instance2.balance() == -1
-
-
-def test_balance_balanced(instance2):
-    """Test balance method on balanced tree."""
-    instance2.insert(3)
-    assert instance2.balance() == 0
+    assert instance2.depth() == 5
 
 
 def test_balance_left(instance2):
     """Test balance method on left-unbalanced tree."""
-    instance2.insert(3)
-    instance2.insert(2)
     assert instance2.balance() == 1
+
+
+def test_balance_balanced(instance2):
+    """Test balance method on balanced tree."""
+    instance2.insert(20)
+    instance2.insert(21)
+    assert instance2.balance() == 0
+
+
+def test_balance_right(instance2):
+    """Test balance method on left-unbalanced tree."""
+    instance2.insert(20)
+    instance2.insert(21)
+    instance2.insert(22)
+    assert instance2.balance() == -1
 
 
 def test_balance_extreme_right(instance):
     """Test balance method on extremely-unbalanced tree."""
-    assert instance.balance() == - 19
+    assert instance.balance() == -19
 
 
 def test_in_order(instance2):
     """Test in-order traversal method."""
-    assert list(instance2.in_order()) == [5, 6, 7, 10, 11, 20]
+    assert list(instance2.in_order()) == [4, 7, 8, 9, 10, 11, 12, 17, 18, 19]
 
 
 def test_in_order_empty(empty_instance):
@@ -138,7 +150,7 @@ def test_in_order_empty(empty_instance):
 
 def test_pre_order(instance2):
     """Test pre-order traversal method."""
-    assert list(instance2.pre_order()) == [7, 6, 5, 10, 20, 11]
+    assert list(instance2.pre_order()) == [11, 9, 8, 7, 4, 10, 17, 12, 19, 18]
 
 
 def test_pre_order_empty(empty_instance):
@@ -148,7 +160,7 @@ def test_pre_order_empty(empty_instance):
 
 def test_post_order(instance2):
     """Test post-order traversal method."""
-    assert list(instance2.post_order()) == [5, 6, 11, 20, 10, 7]
+    assert list(instance2.post_order()) == [4, 7, 8, 10, 9, 12, 18, 19, 17, 11]
 
 
 def test_post_order_empty(empty_instance):
@@ -158,7 +170,7 @@ def test_post_order_empty(empty_instance):
 
 def test_breadth_first(instance2):
     """Test breadth-first traversal method."""
-    assert list(instance2.breadth_first()) == [7, 6, 10, 5, 20, 11]
+    assert list(instance2.breadth_first()) == [11, 9, 17, 8, 10, 12, 19, 7, 18, 4]
 
 
 def test_breadth_first_empty(empty_instance):
@@ -173,3 +185,64 @@ def test_generators(instance):
                 instance.post_order,
                 instance.in_order,
                 instance.breadth_first]])
+
+
+def test_delete_contains(deleteable_instance):
+    """Test that tree does not contain deleted value after delete."""
+    instance, other_values, delete_value = deleteable_instance
+    instance.delete(delete_value)
+    assert not instance.contains(delete_value)
+
+
+def test_size_after_delete(deleteable_instance):
+    """Test that tree is one smaller after deletion."""
+    instance, other_values, delete_value = deleteable_instance
+    size = instance.size()
+    instance.delete(delete_value)
+    new_size = instance.size()
+    assert new_size == len(other_values) == size - 1
+
+
+def test_balance_after_delete(deleteable_instance):
+    """Test that the tree is not worse balanced after deletion."""
+    instance, other_values, delete_value = deleteable_instance
+    deletable = instance._search(delete_value)
+    if all([deletable.left_child, deletable.right_child]):
+        balance = instance.balance()
+        instance.delete(delete_value)
+        new_balance = instance.balance()
+        assert abs(new_balance) <= abs(balance)
+
+
+def test_contains_undeleted(deleteable_instance):
+    """Test that tree still contains all undeleted values."""
+    instance, other_values, delete_value = deleteable_instance
+    instance.delete(delete_value)
+    assert all([instance.contains(value) for value in other_values])
+
+
+def test_delete_not_contained(instance2):
+    """Test that delete leaves the list intact if value not in tree."""
+    first_balance = instance2.balance()
+    instance2.delete(999)
+    assert instance2.balance() == first_balance
+
+
+def test_delete_not_contained_2(instance2):
+    """Test that delete leaves the list intact if value not in tree."""
+    first_size = instance2.size()
+    instance2.delete(999)
+    assert instance2.size() == first_size
+
+
+def test_delete_empty(empty_instance):
+    """Test delete on empty tree."""
+    assert empty_instance.delete(999) is None
+
+
+def test_delete_root(instance2):
+    """Test delete when deletable is root."""
+    instance2.delete(11)
+    values = ([17, 9, 10, 8, 7, 4, 12, 19, 18])
+    assert list(instance2.in_order()) == sorted(values)
+    assert instance2.size() == len(values)
