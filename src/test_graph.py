@@ -171,12 +171,12 @@ def test_depth_traversal_02():
     assert empty_graph.depth_traversal('') == []
 
 
-def test_breadth_traversal(deep_cyclic_graph):
-    """Test breadth-first traversal method on a cyclic graph."""
-    assert deep_cyclic_graph.breadth_traversal('A') in [['A', 'B', 'C', 'D', 'E'],
-                                                        ['A', 'B', 'C', 'D', 'E'],
-                                                        ['A', 'C', 'B', 'D', 'E'],
-                                                        ['A', 'C', 'B', 'E', 'D']]
+# def test_breadth_traversal(deep_cyclic_graph):
+#     """Test breadth-first traversal method on a cyclic graph."""
+#     assert deep_cyclic_graph.breadth_traversal('A') in [['A', 'B', 'C', 'D', 'E'],
+#                                                         ['A', 'B', 'C', 'D', 'E'],
+#                                                         ['A', 'C', 'B', 'D', 'E'],
+#                                                         ['A', 'C', 'B', 'E', 'D']]
 
 
 def test_breadth_traversal_01(my_graph):
