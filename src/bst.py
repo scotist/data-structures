@@ -69,6 +69,10 @@ class Bst(object):
         """Search for value in tree."""
         if self.value == value:
             return self
+        # child_exists = filter(None, [child._search(value) for child in self._children()])
+        # if child_exists:
+        #     return child_exists
+        # return None
         left_contains = None
         right_contains = None
         if self.left_child is not None:
@@ -85,22 +89,14 @@ class Bst(object):
         """Return size of tree."""
         if self.value is None:
             return 0
-        if not self.left_child and not self.right_child:
-            return 1
-        sizes = [child.size()
-                 for child in (self.left_child, self.right_child)
-                 if child is not None]
-        return sum(sizes) + 1
+        sizes = [child.size() for child in self._children()]
+        return sum(sizes + [1])
 
     def depth(self):
         """Return number of levels in the tree."""
         if self.value is None:
             return 0
-        if not self.left_child and not self.right_child:
-            return 1
-        depths = [child.depth()
-                  for child in (self.left_child, self.right_child)
-                  if child is not None]
+        depths = [child.depth() for child in self._children()] or [0]
         return max(depths) + 1
 
     def balance(self):
@@ -128,20 +124,14 @@ class Bst(object):
         """Traverse tree with pre-order traversal."""
         if self.value is not None:
             yield self.value
-        if self.left_child is not None:
-            for item in self.left_child.pre_order():
-                yield item
-        if self.right_child is not None:
-            for item in self.right_child.pre_order():
+        for child in self._children():
+            for item in child.pre_order():
                 yield item
 
     def post_order(self):
         """Traverse tree with post-order traversal."""
-        if self.left_child is not None:
-            for item in self.left_child.post_order():
-                yield item
-        if self.right_child is not None:
-            for item in self.right_child.post_order():
+        for child in self._children():
+            for item in child.post_order():
                 yield item
         if self.value is not None:
             yield self.value
