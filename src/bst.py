@@ -38,6 +38,12 @@ class Bst(object):
         if other_node is not None:
             other_node.parent = self
 
+    def _children(self):
+        """Yield any children which are not None."""
+        for child in (self.left_child, self.right_child):
+            if child is not None:
+                yield child
+
     def insert(self, value):
         """Insert value into tree if not present."""
         if self.contains(value):
