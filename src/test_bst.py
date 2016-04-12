@@ -1,6 +1,7 @@
 # _*_ encoding: utf-8 _*_
 """Tests for binary search tree."""
 from bst import Bst
+from bst_graph_viz import render_viz_fixture
 import pytest
 import types
 import random
@@ -30,6 +31,11 @@ def instance2():
     for fun in insertions:
         fun_tree.insert(fun)
     return fun_tree
+
+
+for fixture in (empty_instance, instance, instance2):
+    # import pdb; pdb.set_trace()
+    render_viz_fixture(fixture(), str(fixture.__name__))
 
 
 @pytest.fixture
