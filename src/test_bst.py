@@ -33,9 +33,8 @@ def instance2():
     return fun_tree
 
 
-for fixture in (empty_instance, instance, instance2):
-    # import pdb; pdb.set_trace()
-    render_viz_fixture(fixture(), str(fixture.__name__))
+# for fixture in (empty_instance, instance, instance2):
+#     render_viz_fixture(fixture(), str(fixture.__name__))
 
 
 @pytest.fixture
