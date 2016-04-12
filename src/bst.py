@@ -63,17 +63,11 @@ class Bst(object):
                 self.left_child = Bst(parent=self, value=value)
             else:
                 self.left_child.insert(value)
-        # except TypeError:
-            # raise TypeError("Cannot mix types in a binary search tree.")
 
     def _search(self, value):
         """Search for value in tree."""
         if self.value == value:
             return self
-        # child_exists = filter(None, [child._search(value) for child in self._children()])
-        # if child_exists:
-        #     return child_exists
-        # return None
         left_contains = None
         right_contains = None
         if self.left_child is not None:
