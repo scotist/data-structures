@@ -258,11 +258,11 @@ def test_balance_after_delete(simple_instance):
     assert -2 < simple_instance.instance.balance() < 2
 
 
-def test_contains_undeleted(deleteable_instance):
+def test_contains_undeleted(simple_instance):
     """Test that tree still contains all undeleted values."""
-    instance, other_values, delete_value = deleteable_instance
-    instance.delete(delete_value)
-    assert all([instance.contains(value) for value in other_values])
+    simple_instance.instance.delete(simple_instance.delete_value)
+    assert all([simple_instance.instance.contains(value)
+                for value in simple_instance.undeleted])
 
 
 def test_delete_not_contained(instance2):
