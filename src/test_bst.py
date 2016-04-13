@@ -6,6 +6,7 @@ import types
 import random
 from bst_graph_viz import render_viz_fixture
 from collections import namedtuple
+import math
 
 Fixture = namedtuple('Fixture', ['instance', 'size', 'depth',
                      'delete_value', 'insert_value', 'undeleted'])
@@ -13,7 +14,8 @@ Fixture = namedtuple('Fixture', ['instance', 'size', 'depth',
 SIMPLE_INSTANCES = [[0, 1, 2], [2, 1, 0], [0, 2, 1], [2, 0, 1],
                     [1, 2, 0], [1, 0, 2]]
 
-RANDOM_INSTANCES = [random.sample(range(1000), 30) for n in range(20)]
+RANDOM_INSTANCES = [random.sample(range(1000),
+                    random.randrange(1, 100)) for n in range(50)]
 
 
 @pytest.fixture
@@ -32,8 +34,10 @@ def simple_instance(request):
     delete_value = random.choice(request.param)
     undeleted = request.param[:]
     undeleted.remove(delete_value)
-    return Fixture(tree, len(request.param),
-                   None,
+    size = len(request.param)
+    depth = math.floor(math.log(size, 2)) + 1
+    return Fixture(tree, size,
+                   depth,
                    delete_value,
                    random.choice(range(1001, 2000)),
                    undeleted)
