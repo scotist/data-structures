@@ -5,9 +5,13 @@ import pytest
 import types
 import random
 from bst_graph_viz import render_viz_fixture
+from collections import namedtuple
 
+Fixture = namedtuple('Fixture', ['instance', 'size', 'depth',
+                     'delete_value', 'insert_value', 'undeleted'])
 
-SIMPLE_INSTANCES = [[0, 1, 2], [2, 1, 0], [0, 2, 1], [2, 0, 1], [1, 2, 0], [1, 0, 2]]
+SIMPLE_INSTANCES = [[0, 1, 2], [2, 1, 0], [0, 2, 1], [2, 0, 1],
+                    [1, 2, 0], [1, 0, 2]]
 
 RANDOM_INSTANCES = [random.sample(range(1000), 30) for n in range(20)]
 
@@ -25,7 +29,14 @@ def simple_instance(request):
     tree = Bst()
     for n in request.param:
         tree.insert(n)
-    return tree, len(request.param)
+    delete_value = random.choice(request.param)
+    undeleted = request.param[:]
+    undeleted.remove(delete_value)
+    return Fixture(tree, len(request.param),
+                   None,
+                   delete_value,
+                   random.choice(range(1001, 2000)),
+                   undeleted)
 
 
 @pytest.fixture
@@ -136,8 +147,7 @@ def test_depth_empty(empty_instance):
 
 def test_balance(simple_instance):
     """Test balance."""
-    instance, length = simple_instance
-    assert -1 <= instance.balance() <= 1
+    assert -1 <= simple_instance.instance.balance() <= 1
 
 
 # def test_depth_simple(simple_instance):
@@ -147,8 +157,8 @@ def test_balance(simple_instance):
 
 def test_size_simple(simple_instance):
     """Test."""
-    instance, length = simple_instance
-    assert instance.size() == length
+    # instance, length = simple_instance
+    assert simple_instance.instance.size() == simple_instance.size
 
 
 def test_balance_left(instance2):
@@ -208,7 +218,8 @@ def test_post_order_empty(empty_instance):
 
 def test_breadth_first(instance2):
     """Test breadth-first traversal method."""
-    assert list(instance2.breadth_first()) == [9, 7, 17, 4, 8, 11, 19, 10, 12, 18]
+    assert list(instance2.breadth_first()) == [9, 7, 17, 4, 8, 11, 19,
+                                               10, 12, 18]
 
 
 def test_breadth_first_empty(empty_instance):
@@ -241,15 +252,10 @@ def test_size_after_delete(deleteable_instance):
     assert new_size == len(other_values) == size - 1
 
 
-def test_balance_after_delete(deleteable_instance):
+def test_balance_after_delete(simple_instance):
     """Test that the tree is not worse balanced after deletion."""
-    instance, other_values, delete_value = deleteable_instance
-    deletable = instance._search(delete_value)
-    if all([deletable.left_child, deletable.right_child]):
-        balance = instance.balance()
-        instance.delete(delete_value)
-        new_balance = instance.balance()
-        assert abs(new_balance) <= abs(balance)
+    simple_instance.instance.delete(simple_instance.delete_value)
+    assert -2 < simple_instance.instance.balance() < 2
 
 
 def test_contains_undeleted(deleteable_instance):
