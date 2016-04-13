@@ -208,17 +208,18 @@ class Bst(object):
                 if value != deletable.value:
                     self.insert(value)
         else:
-            if self.balance() <= 0:
-                largest_child = self.right_child
+            if self.balance() >= 0:
+                smaller_child = self.right_child
                 insertable = self.left_child
             else:
-                largest_child = self.left_child
+                smaller_child = self.left_child
                 insertable = self.right_child
-            self.right_child = largest_child.right_child
-            self.left_child = largest_child.left_child
-            self.value = largest_child.value
+            if smaller_child is not None:
+                self.right_child = smaller_child.right_child
+                self.left_child = smaller_child.left_child
+                self.value = smaller_child.value
             self.parent = None
-            del largest_child
+            del smaller_child
             if insertable is not None:
                 for value in insertable.breadth_first():
                     self.insert(value)
