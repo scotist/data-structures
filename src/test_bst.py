@@ -4,6 +4,12 @@ from bst import Bst
 import pytest
 import types
 import random
+from bst_graph_viz import render_viz_fixture
+
+
+SIMPLE_INSTANCES = [[0, 1, 2], [2, 1, 0], [0, 2, 1], [2, 0, 1], [1, 2, 0], [1, 0, 2]]
+
+RANDOM_INSTANCES = [random.sample(range(1000), 30) for n in range(20)]
 
 
 @pytest.fixture
@@ -11,6 +17,15 @@ def empty_instance():
     """Empty tree fixture."""
     tree = Bst()
     return tree
+
+
+@pytest.fixture(params=SIMPLE_INSTANCES + RANDOM_INSTANCES)
+def simple_instance(request):
+    """Simple tree fixture."""
+    tree = Bst()
+    for n in request.param:
+        tree.insert(n)
+    return tree, len(request.param)
 
 
 @pytest.fixture
@@ -23,11 +38,22 @@ def instance():
 
 
 @pytest.fixture
+def left_left_instance():
+    """Left-balanced fixture."""
+    tree = Bst()
+    for n in range(0, 20, -1):
+        render_viz_fixture(tree, 'left_left' + str(n))
+        tree.insert(n)
+    return tree
+
+
+@pytest.fixture
 def instance2():
     """Fun tree fixture."""
     fun_tree = Bst()
     insertions = [11, 17, 9, 10, 8, 7, 4, 12, 19, 18]
     for fun in insertions:
+        # render_viz_fixture(fun_tree, 'instance2_' + str(fun))
         fun_tree.insert(fun)
     return fun_tree
 
@@ -98,9 +124,9 @@ def test_size_empty(empty_instance):
     assert empty_instance.size() == 0
 
 
-# def test_depth(instance):
-#     """Test depth method."""
-#     assert instance.depth() == 20
+def test_depth(instance):
+    """Test depth method."""
+    assert instance.depth() == 5
 
 
 def test_depth_empty(empty_instance):
@@ -108,41 +134,46 @@ def test_depth_empty(empty_instance):
     assert empty_instance.depth() == 0
 
 
-def test_depth_fun(instance2):
-    """Test depth method on more complex tree."""
-    assert instance2.depth() == 5
-
-
-@pytest.mark.parametrize('tree', [empty_instance(),
-                                  instance(), instance2()])
-def test_balance(tree):
+def test_balance(simple_instance):
     """Test balance."""
-    assert -1 <= tree.balance() <= 1
+    instance, length = simple_instance
+    assert -1 <= instance.balance() <= 1
 
 
-# def test_balance_left(instance2):
-#     """Test balance method on left-unbalanced tree."""
-#     assert instance2.balance() == 1
+# def test_depth_simple(simple_instance):
+#     """Test."""
+#     assert simple_instance.depth() == 2
 
 
-# def test_balance_balanced(instance2):
-#     """Test balance method on balanced tree."""
-#     instance2.insert(20)
-#     instance2.insert(21)
-#     assert instance2.balance() == 0
+def test_size_simple(simple_instance):
+    """Test."""
+    instance, length = simple_instance
+    assert instance.size() == length
 
 
-# def test_balance_right(instance2):
-#     """Test balance method on left-unbalanced tree."""
-#     instance2.insert(20)
-#     instance2.insert(21)
-#     instance2.insert(22)
-#     assert instance2.balance() == -1
+def test_balance_left(instance2):
+    """Test balance method on left-unbalanced tree."""
+    assert instance2.balance() == -1
 
 
-# def test_balance_extreme_right(instance):
-#     """Test balance method on extremely-unbalanced tree."""
-#     assert instance.balance() == -19
+def test_balance_balanced(instance2):
+    """Test balance method on balanced tree."""
+    instance2.insert(20)
+    instance2.insert(21)
+    assert instance2.balance() == 0
+
+
+def test_balance_right(instance2):
+    """Test balance method further."""
+    instance2.insert(20)
+    instance2.insert(21)
+    instance2.insert(22)
+    assert instance2.balance() == 0
+
+
+def test_balance_extreme_right(instance):
+    """Test self-balance method on extremely-unbalanced tree."""
+    assert -2 < instance.balance() < 2
 
 
 def test_in_order(instance2):
@@ -155,9 +186,9 @@ def test_in_order_empty(empty_instance):
     assert list(empty_instance.in_order()) == []
 
 
-# def test_pre_order(instance2):
-#     """Test pre-order traversal method."""
-#     assert list(instance2.pre_order()) == [11, 9, 8, 7, 4, 10, 17, 12, 19, 18]
+def test_pre_order(instance2):
+    """Test pre-order traversal method."""
+    assert list(instance2.pre_order()) == [9, 7, 4, 8, 17, 11, 10, 12, 19, 18]
 
 
 def test_pre_order_empty(empty_instance):
@@ -165,9 +196,9 @@ def test_pre_order_empty(empty_instance):
     assert list(empty_instance.pre_order()) == []
 
 
-# def test_post_order(instance2):
-#     """Test post-order traversal method."""
-#     assert list(instance2.post_order()) == [4, 7, 8, 10, 9, 12, 18, 19, 17, 11]
+def test_post_order(instance2):
+    """Test post-order traversal method."""
+    assert list(instance2.post_order()) == [4, 8, 7, 10, 12, 11, 18, 19, 17, 9]
 
 
 def test_post_order_empty(empty_instance):
@@ -175,9 +206,9 @@ def test_post_order_empty(empty_instance):
     assert list(empty_instance.post_order()) == []
 
 
-# def test_breadth_first(instance2):
-#     """Test breadth-first traversal method."""
-#     assert list(instance2.breadth_first()) == [11, 9, 17, 8, 10, 12, 19, 7, 18, 4]
+def test_breadth_first(instance2):
+    """Test breadth-first traversal method."""
+    assert list(instance2.breadth_first()) == [9, 7, 17, 4, 8, 11, 19, 10, 12, 18]
 
 
 def test_breadth_first_empty(empty_instance):
@@ -210,15 +241,15 @@ def test_size_after_delete(deleteable_instance):
     assert new_size == len(other_values) == size - 1
 
 
-# def test_balance_after_delete(deleteable_instance):
-#     """Test that the tree is not worse balanced after deletion."""
-#     instance, other_values, delete_value = deleteable_instance
-#     deletable = instance._search(delete_value)
-#     if all([deletable.left_child, deletable.right_child]):
-#         balance = instance.balance()
-#         instance.delete(delete_value)
-#         new_balance = instance.balance()
-#         assert abs(new_balance) <= abs(balance)
+def test_balance_after_delete(deleteable_instance):
+    """Test that the tree is not worse balanced after deletion."""
+    instance, other_values, delete_value = deleteable_instance
+    deletable = instance._search(delete_value)
+    if all([deletable.left_child, deletable.right_child]):
+        balance = instance.balance()
+        instance.delete(delete_value)
+        new_balance = instance.balance()
+        assert abs(new_balance) <= abs(balance)
 
 
 def test_contains_undeleted(deleteable_instance):

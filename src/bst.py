@@ -51,17 +51,67 @@ class Bst(object):
             return
         if self.value is None:
             self.value = value
-            return
         if not isinstance(value, type(self.value)):
             raise TypeError("Cannot mix types in a binary search tree.")
         if value > self.value:
-            insertable = "right_child"
+            if not self.right_child:
+                self.right_child = Bst(parent=self, value=value)
+            else:
+                self.right_child.insert(value)
         elif value < self.value:
-            insertable = "left_child"
-        if getattr(self, insertable) is None:
-            setattr(self, insertable, Bst(parent=self, value=value))
-        else:
-            getattr(self, insertable).insert(value)
+            if not self.left_child:
+                self.left_child = Bst(parent=self, value=value)
+            else:
+                self.left_child.insert(value)
+        # print('done inserting at {}'.format(self.value))
+        new_balance = self.balance()
+        if new_balance < -1:
+            self._rotate_left()
+        elif new_balance > 1:
+            self._rotate_right()
+
+    def _rotate_left(self):
+        pivot = self.right_child
+        if pivot.balance() > 0:
+            pivot.left_child, pivot.right_child = pivot.right_child, pivot.left_child
+        right_right_grandchild = pivot.right_child
+        other_node = self.left_child
+        floater = pivot.left_child
+        # grandparent = self.parent
+
+        self.value, pivot.value = pivot.value, self.value
+
+        self.right_child = right_right_grandchild
+        right_right_grandchild.parent = self
+
+        if other_node is not None:
+            other_node.parent = floater
+        pivot.right_child, pivot.left_child = floater, other_node
+
+        pivot.parent = self
+        self.left_child = pivot
+
+    def _rotate_right(self):
+        pivot = self.left_child
+        if pivot.balance() < 0:
+            pivot.left_child, pivot.right_child = pivot.right_child, pivot.left_child
+        left_left_grandchild = pivot.left_child
+        # pivot_balance = self.left_child.balance()
+        other_node = self.right_child
+        floater = pivot.right_child
+        # grandparent = self.parent
+
+        self.value, pivot.value = pivot.value, self.value
+
+        self.left_child = left_left_grandchild
+        left_left_grandchild.parent = self
+
+        if other_node is not None:
+            other_node.parent = floater
+        pivot.left_child, pivot.right_child = floater, other_node
+
+        pivot.parent = self
+        self.right_child = pivot
 
     def _search(self, value):
         """Search for value in tree."""
@@ -135,7 +185,6 @@ class Bst(object):
         q = Queue()
         q.enqueue(self)
         while q.size() > 0:
-            print(q.size())
             tree = q.dequeue()
             if tree.value is not None:
                 yield tree.value

@@ -19,7 +19,6 @@ def render_viz_fixture(root, filename):
     q = Queue()
     q.enqueue(root)
     while q.size() > 0:
-        print(q.size())
         tree = q.dequeue()
         if tree.value is not None:
             bst_graph.node(str(tree.value))
@@ -30,4 +29,4 @@ def render_viz_fixture(root, filename):
         if tree.right_child is not None:
             q.enqueue(tree.right_child)
     bst_graph.render(filename=filename)
-    webbrowser.open(filename + '.svg')
+    webbrowser.open_new_tab(filename + '.svg')
