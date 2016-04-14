@@ -63,7 +63,6 @@ class Bst(object):
                 self.left_child = Bst(parent=self, value=value)
             else:
                 self.left_child.insert(value)
-        # print('done inserting at {}'.format(self.value))
         new_balance = self.balance()
         if new_balance < -1:
             self._rotate_left()

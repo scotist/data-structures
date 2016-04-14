@@ -17,8 +17,6 @@ SIMPLE_INSTANCES = [[0, 1, 2], [2, 1, 0], [0, 2, 1], [2, 0, 1],
 RANDOM_INSTANCES = [random.sample(range(1000),
                     random.randrange(1, 100)) for n in range(50)]
 
-# RANDOM_INSTANCES = []
-
 
 @pytest.fixture
 def empty_instance():
@@ -76,7 +74,6 @@ def instance2():
     fun_tree = Bst()
     insertions = [11, 17, 9, 10, 8, 7, 4, 12, 19, 18]
     for fun in insertions:
-        # render_viz_fixture(fun_tree, 'instance2_' + str(fun))
         fun_tree.insert(fun)
     return fun_tree
 
@@ -162,14 +159,16 @@ def test_balance(simple_instance):
     assert -1 <= simple_instance.instance.balance() <= 1
 
 
-# def test_depth_simple(simple_instance):
-#     """Test."""
-#     assert simple_instance.depth() == 2
+def test_depth_simple(simple_instance):
+    """Test depth method on simple instances."""
+    if simple_instance.size < 5:
+        assert simple_instance.instance.depth() == simple_instance.depth
+    else:
+        abs(simple_instance.instance.depth() - simple_instance.depth) < 2
 
 
 def test_size_simple(simple_instance):
     """Test."""
-    # instance, length = simple_instance
     assert simple_instance.instance.size() == simple_instance.size
 
 
