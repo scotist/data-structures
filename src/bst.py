@@ -71,7 +71,7 @@ class Bst(object):
 
     def _rotate_left(self):
         pivot = self.right_child
-        if pivot.balance() > 0:
+        if pivot.balance() > 0: # rotate pivot right
             pivot.left_child, pivot.right_child = pivot.right_child, pivot.left_child
         right_right_grandchild = pivot.right_child
         other_node = self.left_child
@@ -91,7 +91,7 @@ class Bst(object):
 
     def _rotate_right(self):
         pivot = self.left_child
-        if pivot.balance() < 0:
+        if pivot.balance() < 0: # rotate pivot left
             pivot.left_child, pivot.right_child = pivot.right_child, pivot.left_child
         left_left_grandchild = pivot.left_child
         other_node = self.right_child
@@ -230,7 +230,7 @@ class Bst(object):
             self._rotate_left()
         elif new_balance > 1:
             self._rotate_right()
-
+# we should be able to balance by swapping the pivot parent and floater
 
 if __name__ == "__main__":
     values = random.sample(range(1000), 100)
