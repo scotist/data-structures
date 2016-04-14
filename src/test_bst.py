@@ -40,6 +40,8 @@ def deleteable_instance(instance2):
     insertions.remove(delete_value)
     return (instance2, insertions, delete_value)
 
+    # Removed redundant test
+
 
 def test_new_empty_tree(empty_instance):
     """Test that an empty tree is still a tree."""
