@@ -77,7 +77,6 @@ class Bst(object):
         right_right_grandchild = pivot.right_child
         other_node = self.left_child
         floater = pivot.left_child
-        # grandparent = self.parent
 
         self.value, pivot.value = pivot.value, self.value
 
@@ -96,10 +95,8 @@ class Bst(object):
         if pivot.balance() < 0:
             pivot.left_child, pivot.right_child = pivot.right_child, pivot.left_child
         left_left_grandchild = pivot.left_child
-        # pivot_balance = self.left_child.balance()
         other_node = self.right_child
         floater = pivot.right_child
-        # grandparent = self.parent
 
         self.value, pivot.value = pivot.value, self.value
 
@@ -208,22 +205,32 @@ class Bst(object):
                 if value != deletable.value:
                     self.insert(value)
         else:
-            if self.balance() >= 0:
-                smaller_child = self.right_child
+            if self.balance() <= 0:
+                larger_child = self.right_child
                 insertable = self.left_child
             else:
-                smaller_child = self.left_child
+                larger_child = self.left_child
                 insertable = self.right_child
-            if smaller_child is not None:
-                self.right_child = smaller_child.right_child
-                self.left_child = smaller_child.left_child
-                self.value = smaller_child.value
-            self.parent = None
-            del smaller_child
-            if insertable is not None:
-                for value in insertable.breadth_first():
-                    self.insert(value)
-            del insertable
+            try:
+                self.right_child = larger_child.right_child
+                self.left_child = larger_child.left_child
+                self.value = larger_child.value
+                self.parent = None
+                if insertable is not None:
+                    for value in insertable.breadth_first():
+                        self.insert(value)
+            except AttributeError:
+                if insertable is not None:
+                    self.right_child = insertable.right_child
+                    self.left_child = insertable.left_child
+                    self.value = insertable.value
+                else:
+                    self.value = None
+        new_balance = self.balance()
+        if new_balance < -1:
+            self._rotate_left()
+        elif new_balance > 1:
+            self._rotate_right()
 
 
 if __name__ == "__main__":

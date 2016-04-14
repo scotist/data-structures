@@ -8,14 +8,16 @@ from bst_graph_viz import render_viz_fixture
 from collections import namedtuple
 import math
 
-Fixture = namedtuple('Fixture', ['instance', 'size', 'depth',
+Fixture = namedtuple('Fixture', ['seq', 'instance', 'size', 'depth',
                      'delete_value', 'insert_value', 'undeleted'])
 
 SIMPLE_INSTANCES = [[0, 1, 2], [2, 1, 0], [0, 2, 1], [2, 0, 1],
-                    [1, 2, 0], [1, 0, 2]]
+                    [1, 2, 0], [1, 0, 2], [], [0], [0, 1], [1, 0]]
 
 RANDOM_INSTANCES = [random.sample(range(1000),
                     random.randrange(1, 100)) for n in range(50)]
+
+# RANDOM_INSTANCES = []
 
 
 @pytest.fixture
@@ -31,12 +33,18 @@ def simple_instance(request):
     tree = Bst()
     for n in request.param:
         tree.insert(n)
-    delete_value = random.choice(request.param)
     undeleted = request.param[:]
-    undeleted.remove(delete_value)
+    if request.param:
+        delete_value = random.choice(request.param)
+        undeleted.remove(delete_value)
+    else:
+        delete_value = None
     size = len(request.param)
-    depth = math.floor(math.log(size, 2)) + 1
-    return Fixture(tree, size,
+    try:
+        depth = math.floor(math.log(size, 2)) + 1
+    except ValueError:
+        depth = 0
+    return Fixture(request.param, tree, size,
                    depth,
                    delete_value,
                    random.choice(range(1001, 2000)),
@@ -294,3 +302,30 @@ def test_delete_root(instance2):
     values = ([17, 9, 10, 8, 7, 4, 12, 19, 18])
     assert list(instance2.in_order()) == sorted(values)
     assert instance2.size() == len(values)
+
+
+def test_delete_root_1(empty_instance):
+    """Test delete root when root has no children."""
+    empty_instance.insert(1)
+    assert empty_instance.size() == 1
+    empty_instance.delete(1)
+    assert empty_instance.size() == 0
+
+
+def test_delete_root_2(empty_instance):
+    """Test delete root when root has one child."""
+    empty_instance.insert(1)
+    empty_instance.insert(2)
+    assert empty_instance.size() == 2
+    empty_instance.delete(1)
+    assert empty_instance.size() == 1
+
+
+def test_delete_root_3(empty_instance):
+    """Test delete root when root has two children."""
+    empty_instance.insert(1)
+    empty_instance.insert(2)
+    empty_instance.insert(3)
+    assert empty_instance.size() == 3
+    empty_instance.delete(1)
+    assert empty_instance.size() == 2
