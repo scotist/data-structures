@@ -1,3 +1,4 @@
+"""Setup for data structures."""
 from setuptools import setup
 
 setup(
@@ -9,5 +10,5 @@ setup(
     py_modules=['linked_list', 'doubly_linked', 'stack'],
     package_dir={'': 'src'},
     install_requires=[''],
-    extras_require={'test': ['pytest', 'pytest-xdist', 'tox', 'graphviz']},
+    extras_require={'test': ['pytest', 'pytest-xdist', 'tox']},
 )
