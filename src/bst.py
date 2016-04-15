@@ -71,42 +71,36 @@ class Bst(object):
 
     def _rotate_left(self):
         pivot = self.right_child
-        if pivot.balance() > 0: # rotate pivot right
-            pivot.left_child, pivot.right_child = pivot.right_child, pivot.left_child
-        right_right_grandchild = pivot.right_child
+        if pivot.balance() > 0:
+            pivot._rotate_right()
+        rr_grandchild = pivot.right_child
         other_node = self.left_child
         floater = pivot.left_child
 
         self.value, pivot.value = pivot.value, self.value
-
-        self.right_child = right_right_grandchild
-        right_right_grandchild.parent = self
+        self.right_child = rr_grandchild
 
         if other_node is not None:
             other_node.parent = floater
         pivot.right_child, pivot.left_child = floater, other_node
 
-        pivot.parent = self
         self.left_child = pivot
 
     def _rotate_right(self):
         pivot = self.left_child
-        if pivot.balance() < 0: # rotate pivot left
-            pivot.left_child, pivot.right_child = pivot.right_child, pivot.left_child
-        left_left_grandchild = pivot.left_child
+        if pivot.balance() < 0:
+            pivot._rotate_left()
+        ll_grandchild = pivot.left_child
         other_node = self.right_child
         floater = pivot.right_child
 
         self.value, pivot.value = pivot.value, self.value
-
-        self.left_child = left_left_grandchild
-        left_left_grandchild.parent = self
+        self.left_child = ll_grandchild
 
         if other_node is not None:
             other_node.parent = floater
         pivot.left_child, pivot.right_child = floater, other_node
 
-        pivot.parent = self
         self.right_child = pivot
 
     def _search(self, value):

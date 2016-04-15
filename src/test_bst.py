@@ -87,6 +87,25 @@ def deleteable_instance(instance2):
     return (instance2, insertions, delete_value)
 
 
+def test_tree_correct(simple_instance):
+    """Test that any given tree is correct in relationships."""
+    assert tree_checker(simple_instance.instance)
+
+
+def tree_checker(tree):
+    """"Help function to check binary tree correctness."""
+    if tree is None or tree.value is None:
+        return True
+
+    if tree.right_child is not None and tree.right_child.value < tree.value:
+        return False
+    if tree.left_child is not None and tree.left_child.value > tree.value:
+        return False
+
+    return all([tree_checker(tree.left_child),
+                tree_checker(tree.right_child)])
+
+
 def test_new_empty_tree(empty_instance):
     """Test that an empty tree is still a tree."""
     assert all([
