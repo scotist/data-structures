@@ -322,6 +322,13 @@ def test_delete_root(instance2):
     assert instance2.size() == len(values)
 
 
+def test_tree_correct_after_delete(multi_tree):
+    """Make sure that the tree is correct after a deletion."""
+    if multi_tree.size:
+        multi_tree.instance.delete(multi_tree.delete_value)
+        assert tree_checker(multi_tree.instance)
+
+
 def test_delete_root_1(empty_instance):
     """Test delete root when root has no children."""
     empty_instance.insert(1)
