@@ -268,20 +268,19 @@ def test_generators(instance):
                 instance.breadth_first]])
 
 
-def test_delete_contains(deleteable_instance):
+def test_delete_contains(multi_tree):
     """Test that tree does not contain deleted value after delete."""
-    instance, other_values, delete_value = deleteable_instance
-    instance.delete(delete_value)
-    assert not instance.contains(delete_value)
+    multi_tree.instance.delete(multi_tree.delete_value)
+    if multi_tree.size:
+        assert not multi_tree.instance.contains(multi_tree.delete_value)
 
 
-def test_size_after_delete(deleteable_instance):
+def test_size_after_delete(multi_tree):
     """Test that tree is one smaller after deletion."""
-    instance, other_values, delete_value = deleteable_instance
-    size = instance.size()
-    instance.delete(delete_value)
-    new_size = instance.size()
-    assert new_size == len(other_values) == size - 1
+    if multi_tree.size:
+        multi_tree.instance.delete(multi_tree.delete_value)
+        new_size = multi_tree.instance.size()
+        assert new_size == len(multi_tree.undeleted) == multi_tree.size - 1
 
 
 def test_balance_after_delete(multi_tree):
@@ -297,18 +296,17 @@ def test_contains_undeleted(multi_tree):
                 for value in multi_tree.undeleted])
 
 
-def test_delete_not_contained(instance2):
+def test_delete_not_contained(multi_tree):
     """Test that delete leaves the list intact if value not in tree."""
-    first_balance = instance2.balance()
-    instance2.delete(999)
-    assert instance2.balance() == first_balance
+    balance_before = multi_tree.instance.balance()
+    multi_tree.instance.delete(9999999999999)
+    assert multi_tree.instance.balance() == balance_before
 
 
-def test_delete_not_contained_2(instance2):
+def test_delete_not_contained_2(multi_tree):
     """Test that delete leaves the list intact if value not in tree."""
-    first_size = instance2.size()
-    instance2.delete(999)
-    assert instance2.size() == first_size
+    multi_tree.instance.delete(9999999999999)
+    assert multi_tree.instance.size() == multi_tree.size
 
 
 def test_delete_empty(empty_instance):
