@@ -9,10 +9,10 @@ from collections import namedtuple
 import math
 
 Fixture = namedtuple('Fixture', ['seq', 'instance', 'size', 'depth',
-                     'delete_value', 'insert_value', 'undeleted'])
+                     'delete_value', 'insert_value', 'undeleted', 'in_order'])
 
-SIMPLE_INSTANCES = [[0, 1, 2], [2, 1, 0], [0, 2, 1], [2, 0, 1],
-                    [1, 2, 0], [1, 0, 2], [], [0], [0, 1], [1, 0]]
+EDGE_CASES = [[0, 1, 2], [2, 1, 0], [0, 2, 1], [2, 0, 1],
+              [1, 2, 0], [1, 0, 2], [], [0], [0, 1], [1, 0]]
 
 RANDOM_INSTANCES = [random.sample(range(1000),
                     random.randrange(1, 100)) for n in range(50)]
@@ -25,8 +25,8 @@ def empty_instance():
     return tree
 
 
-@pytest.fixture(params=SIMPLE_INSTANCES + RANDOM_INSTANCES)
-def simple_instance(request):
+@pytest.fixture(params=EDGE_CASES + RANDOM_INSTANCES)
+def multi_tree(request):
     """Simple tree fixture."""
     tree = Bst()
     for n in request.param:
@@ -42,11 +42,13 @@ def simple_instance(request):
         depth = math.floor(math.log(size, 2)) + 1
     except ValueError:
         depth = 0
+    in_order = list(sorted(request.param))
     return Fixture(request.param, tree, size,
                    depth,
                    delete_value,
                    random.choice(range(1001, 2000)),
-                   undeleted)
+                   undeleted,
+                   in_order)
 
 
 @pytest.fixture
@@ -87,9 +89,9 @@ def deleteable_instance(instance2):
     return (instance2, insertions, delete_value)
 
 
-def test_tree_correct(simple_instance):
+def test_tree_correct(multi_tree):
     """Test that any given tree is correct in relationships."""
-    assert tree_checker(simple_instance.instance)
+    assert tree_checker(multi_tree.instance)
 
 
 def tree_checker(tree):
@@ -173,22 +175,22 @@ def test_depth_empty(empty_instance):
     assert empty_instance.depth() == 0
 
 
-def test_balance(simple_instance):
+def test_balance(multi_tree):
     """Test balance."""
-    assert -1 <= simple_instance.instance.balance() <= 1
+    assert -1 <= multi_tree.instance.balance() <= 1
 
 
-def test_depth_simple(simple_instance):
+def test_depth_simple(multi_tree):
     """Test depth method on simple instances."""
-    if simple_instance.size < 5:
-        assert simple_instance.instance.depth() == simple_instance.depth
+    if multi_tree.size < 5:
+        assert multi_tree.instance.depth() == multi_tree.depth
     else:
-        abs(simple_instance.instance.depth() - simple_instance.depth) < 2
+        abs(multi_tree.instance.depth() - multi_tree.depth) < 2
 
 
-def test_size_simple(simple_instance):
+def test_size_simple(multi_tree):
     """Test."""
-    assert simple_instance.instance.size() == simple_instance.size
+    assert multi_tree.instance.size() == multi_tree.size
 
 
 def test_balance_left(instance2):
@@ -216,9 +218,9 @@ def test_balance_extreme_right(instance):
     assert -2 < instance.balance() < 2
 
 
-def test_in_order(instance2):
+def test_in_order(multi_tree):
     """Test in-order traversal method."""
-    assert list(instance2.in_order()) == [4, 7, 8, 9, 10, 11, 12, 17, 18, 19]
+    assert list(multi_tree.instance.in_order()) == multi_tree.in_order
 
 
 def test_in_order_empty(empty_instance):
@@ -282,17 +284,17 @@ def test_size_after_delete(deleteable_instance):
     assert new_size == len(other_values) == size - 1
 
 
-def test_balance_after_delete(simple_instance):
+def test_balance_after_delete(multi_tree):
     """Test that the tree is not worse balanced after deletion."""
-    simple_instance.instance.delete(simple_instance.delete_value)
-    assert -2 < simple_instance.instance.balance() < 2
+    multi_tree.instance.delete(multi_tree.delete_value)
+    assert -2 < multi_tree.instance.balance() < 2
 
 
-def test_contains_undeleted(simple_instance):
+def test_contains_undeleted(multi_tree):
     """Test that tree still contains all undeleted values."""
-    simple_instance.instance.delete(simple_instance.delete_value)
-    assert all([simple_instance.instance.contains(value)
-                for value in simple_instance.undeleted])
+    multi_tree.instance.delete(multi_tree.delete_value)
+    assert all([multi_tree.instance.contains(value)
+                for value in multi_tree.undeleted])
 
 
 def test_delete_not_contained(instance2):
