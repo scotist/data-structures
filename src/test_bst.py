@@ -4,7 +4,6 @@ from bst import Bst
 import pytest
 import types
 import random
-from bst_graph_viz import render_viz_fixture
 from collections import namedtuple
 import math
 
@@ -65,7 +64,6 @@ def left_left_instance():
     """Left-balanced fixture."""
     tree = Bst()
     for n in range(0, 20, -1):
-        render_viz_fixture(tree, 'left_left' + str(n))
         tree.insert(n)
     return tree
 
