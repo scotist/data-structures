@@ -182,24 +182,6 @@ class Bst(object):
             for child in tree._children():
                 q.enqueue(child)
 
-    def delete2(self, value):
-        """Delete value from tree."""
-        if self.value != value:
-            for child in self._children():
-                child.delete(value)
-            return
-        if self.parent is not None:
-            if self.parent.left_child == self:
-                self.parent.left_child = None
-            if self.parent.right_child == self:
-                self.parent.right_child = None
-
-        vals = [val for child in self._children()
-                for val in child.breadth_first() if val != value]
-        self.value, self.left_child, self.right_child = None, None, None
-        for val in vals:
-            self.insert(val)
-
     def delete(self, value):
         """Delete value from tree."""
         if self.value == value:
@@ -222,48 +204,6 @@ class Bst(object):
             for child in self._children():
                 child.delete(value)
         self.rebalance()
-
-    def delete1(self, value):
-        """Delete value from tree."""
-        deletable = self._search(value)
-        if not deletable:
-            return
-        if deletable.parent is not None:
-            if deletable.parent.left_child == deletable:
-                deletable.parent.left_child = None
-            elif deletable.parent.right_child == deletable:
-                deletable.parent.right_child = None
-            deletable.parent = None
-            for value in deletable.breadth_first():
-                if value != deletable.value:
-                    self.insert(value)
-        else:
-            if self.balance() <= 0:
-                larger_child = self.right_child
-                insertable = self.left_child
-            else:
-                larger_child = self.left_child
-                insertable = self.right_child
-            try:
-                self.right_child = larger_child.right_child
-                self.left_child = larger_child.left_child
-                self.value = larger_child.value
-                self.parent = None
-                if insertable is not None:
-                    for value in insertable.breadth_first():
-                        self.insert(value)
-            except AttributeError:
-                if insertable is not None:
-                    self.right_child = insertable.right_child
-                    self.left_child = insertable.left_child
-                    self.value = insertable.value
-                else:
-                    self.value = None
-        new_balance = self.balance()
-        if new_balance < -1:
-            self._rotate_left()
-        elif new_balance > 1:
-            self._rotate_right()
 
 
 if __name__ == "__main__":
