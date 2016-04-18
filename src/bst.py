@@ -107,13 +107,11 @@ class Bst(object):
         """Search for value in tree."""
         if self.value == value:
             return self
-        left_contains = None
-        right_contains = None
-        if self.left_child is not None:
-            left_contains = self.left_child._search(value)
-        if self.right_child is not None:
-            right_contains = self.right_child._search(value)
-        return left_contains or right_contains
+        for child in self._children():
+            result = child._search(value)
+            if result:
+                return result
+        return None
 
     def contains(self, value):
         """Return True if value in tree."""
