@@ -379,46 +379,49 @@ def test_rotated_children_after_insert(seq):
                 tree.right_child.value == expected_right_child])
 
 
-# def test_rotated_head_after_insert_ll(empty_instance):
-#     """Test that value at top of tree is what we expect after rotate."""
-#     empty_instance.insert(3)
-#     empty_instance.insert(2)
-#     assert empty_instance.value == 3
-#     empty_instance.insert(1)
-#     assert empty_instance.value == 2
+def test_rotated_root_after_delete_rr():
+    """Test that tree rotates as expected after deleting from lighter side."""
+    tree = Bst()
+    for val in [2, 1, 3, 4]:
+        tree.insert(val)
+    assert tree.value == 2
+    tree.delete(1)
+    assert all([tree.value == 3,
+                tree.left_child.value == 2,
+                tree.right_child.value == 4])
 
 
-# def test_rotated_head_after_insert_rl(empty_instance):
-#     """Test that value at top of tree is what we expect after rotate."""
-#     empty_instance.insert(1)
-#     empty_instance.insert(3)
-#     assert empty_instance.value == 1
-#     empty_instance.insert(2)
-#     assert empty_instance.value == 2
+def test_rotated_root_after_delete_rl():
+    """Test that tree rotates as expected after deleting from lighter side."""
+    tree = Bst()
+    for val in [2, 1, 5, 4]:
+        tree.insert(val)
+    assert tree.value == 2
+    tree.delete(1)
+    assert all([tree.value == 4,
+                tree.left_child.value == 2,
+                tree.right_child.value == 5])
 
 
-# def test_rotated_head_after_insert_lr(empty_instance):
-#     """Test that value at top of tree is what we expect after rotate."""
-#     empty_instance.insert(3)
-#     empty_instance.insert(2)
-#     assert empty_instance.value == 3
-#     empty_instance.insert(1)
-#     assert empty_instance.value == 2
+def test_rotated_root_after_delete_ll():
+    """Test that tree rotates as expected after deleting from heavier side."""
+    tree = Bst()
+    for val in [3, 4, 2, 1]:
+        tree.insert(val)
+    assert tree.value == 3
+    tree.delete(4)
+    assert all([tree.value == 2,
+                tree.left_child.value == 1,
+                tree.right_child.value == 3])
 
 
-# def test_rotated_chdi_after_insert1(empty_instance):
-#     """Test that children from top of tree are what we expect after rotate."""
-#     empty_instance.insert(1)
-#     empty_instance.insert(2)
-#     assert empty_instance.value == 1
-#     empty_instance.insert(3)
-#     assert empty_instance.value == 2
-
-
-# def test_rotated_head_after_insert2(empty_instance):
-#     """Test that children from top of tree are what we expect after rotate."""
-#     empty_instance.insert(10)
-#     empty_instance.insert(15)
-#     assert empty_instance.value == 10
-#     empty_instance.insert(12)
-#     assert empty_instance.value == 12
+def test_rotated_root_after_delete_l2():
+    """Test that tree rotates as expected after deleting from heavier side."""
+    tree = Bst()
+    for val in [4, 5, 2, 3]:
+        tree.insert(val)
+    assert tree.value == 4
+    tree.delete(5)
+    assert all([tree.value == 3,
+                tree.left_child.value == 2,
+                tree.right_child.value == 4])

@@ -205,15 +205,12 @@ class Bst(object):
         if self.value == value:
             deleteable = self
             nullable = ['left_child', 'right_child']
-
         elif self.left_child is not None and self.left_child.value == value:
             deleteable = self.left_child
             nullable = ['left_child']
-
         elif self.right_child is not None and self.right_child.value == value:
             deleteable = self.right_child
             nullable = ['right_child']
-
         try:
             deleteable.value = None
             vals = [val for val in deleteable.breadth_first()]
@@ -221,11 +218,10 @@ class Bst(object):
                 setattr(self, attr, None)
             for val in vals:
                 self.insert(val)
-            self.rebalance()
-
         except NameError:
             for child in self._children():
                 child.delete(value)
+        self.rebalance()
 
     def delete1(self, value):
         """Delete value from tree."""
