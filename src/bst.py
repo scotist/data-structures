@@ -176,10 +176,8 @@ class Bst(object):
             tree = q.dequeue()
             if tree.value is not None:
                 yield tree.value
-            if tree.left_child is not None:
-                q.enqueue(tree.left_child)
-            if tree.right_child is not None:
-                q.enqueue(tree.right_child)
+            for child in tree._children():
+                q.enqueue(child)
 
     def delete(self, value):
         """Delete value from tree."""
