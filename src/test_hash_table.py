@@ -53,6 +53,13 @@ def test_set_get(sample_table, value):
     assert sample_table.get(value) == value
 
 
+def test_get_fail(sample_table):
+    """Test table return none when key not present."""
+    for string in SAMPLE_STRINGS:
+        sample_table.set(string, string)
+    assert sample_table.get("bub") is None
+
+
 @pytest.mark.parametrize("value", SAMPLE_STRINGS)
 def test_table_size(sample_table, value):
     """Test size of hash table."""
