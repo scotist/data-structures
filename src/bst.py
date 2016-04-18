@@ -53,16 +53,16 @@ class Bst(object):
             raise TypeError("Cannot mix types in a binary search tree.")
         if value == self.value:
             return
-        elif value > self.value:
-            if not self.right_child:
-                self.right_child = Bst(parent=self, value=value)
-            else:
-                self.right_child.insert(value)
-        elif value < self.value:
-            if not self.left_child:
-                self.left_child = Bst(parent=self, value=value)
-            else:
-                self.left_child.insert(value)
+        if value > self.value:
+            insert_name = "right_child"
+        else:
+            insert_name = "left_child"
+        insert_child = getattr(self, insert_name)
+        if insert_child is None:
+            setattr(self, insert_name, Bst(parent=self, value=value))
+        else:
+            insert_child.insert(value)
+
         new_balance = self.balance()
         if new_balance < -1:
             self._rotate_left()
