@@ -15,6 +15,7 @@ EDGE_CASES = [[0, 1, 2], [2, 1, 0], [0, 2, 1], [2, 0, 1],
 
 RANDOM_INSTANCES = [random.sample(range(1000),
                     random.randrange(1, 100)) for n in range(50)]
+# RANDOM_INSTANCES = []
 
 
 @pytest.fixture
@@ -324,6 +325,7 @@ def test_tree_correct_after_delete(multi_tree):
     """Make sure that the tree is correct after a deletion."""
     if multi_tree.size:
         multi_tree.instance.delete(multi_tree.delete_value)
+        # import pdb;pdb.set_trace()
         assert tree_checker(multi_tree.instance)
 
 

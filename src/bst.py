@@ -62,7 +62,10 @@ class Bst(object):
             setattr(self, insert_name, Bst(parent=self, value=value))
         else:
             insert_child.insert(value)
+        self.rebalance()
 
+    def rebalance(self):
+        """Rotate in place as necessary to ensure tree is balanced."""
         new_balance = self.balance()
         if new_balance < -1:
             self._rotate_left()
@@ -179,7 +182,52 @@ class Bst(object):
             for child in tree._children():
                 q.enqueue(child)
 
+    def delete2(self, value):
+        """Delete value from tree."""
+        if self.value != value:
+            for child in self._children():
+                child.delete(value)
+            return
+        if self.parent is not None:
+            if self.parent.left_child == self:
+                self.parent.left_child = None
+            if self.parent.right_child == self:
+                self.parent.right_child = None
+
+        vals = [val for child in self._children()
+                for val in child.breadth_first() if val != value]
+        self.value, self.left_child, self.right_child = None, None, None
+        for val in vals:
+            self.insert(val)
+
     def delete(self, value):
+        """Delete value from tree."""
+        if self.value == value:
+            deleteable = self
+            nullable = ['left_child', 'right_child']
+
+        elif self.left_child is not None and self.left_child.value == value:
+            deleteable = self.left_child
+            nullable = ['left_child']
+
+        elif self.right_child is not None and self.right_child.value == value:
+            deleteable = self.right_child
+            nullable = ['right_child']
+
+        try:
+            deleteable.value = None
+            vals = [val for val in deleteable.breadth_first()]
+            for attr in nullable:
+                setattr(self, attr, None)
+            for val in vals:
+                self.insert(val)
+            self.rebalance()
+
+        except NameError:
+            for child in self._children():
+                child.delete(value)
+
+    def delete1(self, value):
         """Delete value from tree."""
         deletable = self._search(value)
         if not deletable:
