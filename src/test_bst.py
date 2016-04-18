@@ -15,7 +15,6 @@ EDGE_CASES = [[0, 1, 2], [2, 1, 0], [0, 2, 1], [2, 0, 1],
 
 RANDOM_INSTANCES = [random.sample(range(1000),
                     random.randrange(1, 100)) for n in range(50)]
-# RANDOM_INSTANCES = []
 
 
 @pytest.fixture
@@ -28,22 +27,23 @@ def empty_instance():
 @pytest.fixture(params=EDGE_CASES + RANDOM_INSTANCES)
 def multi_tree(request):
     """Simple tree fixture."""
+    seq = request.param
     tree = Bst()
-    for n in request.param:
+    for n in seq:
         tree.insert(n)
-    undeleted = request.param[:]
-    if request.param:
-        delete_value = random.choice(request.param)
+    undeleted = seq[:]
+    if seq:
+        delete_value = random.choice(seq)
         undeleted.remove(delete_value)
     else:
         delete_value = None
-    size = len(request.param)
+    size = len(seq)
     try:
         depth = math.floor(math.log(size, 2)) + 1
     except ValueError:
         depth = 0
-    in_order = list(sorted(request.param))
-    return Fixture(request.param, tree, size,
+    in_order = list(sorted(seq))
+    return Fixture(seq, tree, size,
                    depth,
                    delete_value,
                    random.choice(range(1001, 2000)),
@@ -325,7 +325,6 @@ def test_tree_correct_after_delete(multi_tree):
     """Make sure that the tree is correct after a deletion."""
     if multi_tree.size:
         multi_tree.instance.delete(multi_tree.delete_value)
-        # import pdb;pdb.set_trace()
         assert tree_checker(multi_tree.instance)
 
 
@@ -354,3 +353,72 @@ def test_delete_root_3(empty_instance):
     assert empty_instance.size() == 3
     empty_instance.delete(1)
     assert empty_instance.size() == 2
+
+
+@pytest.mark.parametrize('seq', [seq for seq in EDGE_CASES if len(seq) == 3])
+def test_rotated_root_after_insert(seq):
+    """Test that value at top of tree is what we expect after rotate."""
+    tree = Bst()
+    expected_root_val = list(sorted(seq))[1]
+    tree.insert(seq[0])
+    tree.insert(seq[1])
+    assert tree.value == seq[0]
+    tree.insert(seq[2])
+    assert tree.value == expected_root_val
+
+
+@pytest.mark.parametrize('seq', [seq for seq in EDGE_CASES if len(seq) == 3])
+def test_rotated_children_after_insert(seq):
+    """Test that children from top of tree are what we expect after rotate."""
+    tree = Bst()
+    expected_left_child = list(sorted(seq))[0]
+    expected_right_child = list(sorted(seq))[2]
+    for val in seq:
+        tree.insert(val)
+    assert all([tree.left_child.value == expected_left_child,
+                tree.right_child.value == expected_right_child])
+
+
+# def test_rotated_head_after_insert_ll(empty_instance):
+#     """Test that value at top of tree is what we expect after rotate."""
+#     empty_instance.insert(3)
+#     empty_instance.insert(2)
+#     assert empty_instance.value == 3
+#     empty_instance.insert(1)
+#     assert empty_instance.value == 2
+
+
+# def test_rotated_head_after_insert_rl(empty_instance):
+#     """Test that value at top of tree is what we expect after rotate."""
+#     empty_instance.insert(1)
+#     empty_instance.insert(3)
+#     assert empty_instance.value == 1
+#     empty_instance.insert(2)
+#     assert empty_instance.value == 2
+
+
+# def test_rotated_head_after_insert_lr(empty_instance):
+#     """Test that value at top of tree is what we expect after rotate."""
+#     empty_instance.insert(3)
+#     empty_instance.insert(2)
+#     assert empty_instance.value == 3
+#     empty_instance.insert(1)
+#     assert empty_instance.value == 2
+
+
+# def test_rotated_chdi_after_insert1(empty_instance):
+#     """Test that children from top of tree are what we expect after rotate."""
+#     empty_instance.insert(1)
+#     empty_instance.insert(2)
+#     assert empty_instance.value == 1
+#     empty_instance.insert(3)
+#     assert empty_instance.value == 2
+
+
+# def test_rotated_head_after_insert2(empty_instance):
+#     """Test that children from top of tree are what we expect after rotate."""
+#     empty_instance.insert(10)
+#     empty_instance.insert(15)
+#     assert empty_instance.value == 10
+#     empty_instance.insert(12)
+#     assert empty_instance.value == 12
