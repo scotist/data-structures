@@ -11,10 +11,26 @@ SAMPLE_STRINGS = ["Word", "Something", "Hey", "What", "etc", "chump" "Buddy",
 TABLES = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048]
 
 
+def get_words():
+    """Get a big set of values for thorough tests."""
+    with open("/usr/share/dict/words", "r") as get_file:
+        for line in get_file:
+            yield line
+
+
 @pytest.fixture(params=TABLES)
 def sample_table(request):
     """Sample hash tables fixture."""
     return HashTable(request.param)
+
+
+@pytest.fixture
+def words_table(request):
+    """Big set of sample values."""
+    big_table = HashTable(1024)
+    for word in get_words():
+        big_table.set(word, word)
+    return big_table
 
 
 @pytest.mark.parametrize("value", SAMPLE_STRINGS)
@@ -58,3 +74,9 @@ def test_collision():
     assert ("a", "hello") in small_table._table[1]
     assert ("c", "world") in small_table._table[1]
     assert small_table._table[0] == []
+
+
+def test_set_get_big(words_table):
+    """Test hashing and retrieving on big set of values."""
+    for word in get_words():
+        assert words_table.get(word) == word
