@@ -47,13 +47,13 @@ class Bst(object):
 
     def insert(self, value):
         """Insert value into tree if not present."""
-        if self.contains(value):
-            return
         if self.value is None:
             self.value = value
         if not isinstance(value, type(self.value)):
             raise TypeError("Cannot mix types in a binary search tree.")
-        if value > self.value:
+        if value == self.value:
+            return
+        elif value > self.value:
             if not self.right_child:
                 self.right_child = Bst(parent=self, value=value)
             else:
