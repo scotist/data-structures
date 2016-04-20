@@ -87,6 +87,8 @@ def deleteable_instance(instance2):
     insertions.remove(delete_value)
     return (instance2, insertions, delete_value)
 
+    # Removed redundant test
+
 
 def test_tree_correct(multi_tree):
     """Test that any given tree is correct in relationships."""
