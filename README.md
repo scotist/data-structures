@@ -34,3 +34,10 @@ http://code.activestate.com/recipes/576723-dfs-and-bfs-graph-traversal/
 
 Inspiration for the insertion sort algorithm found at:
 http://interactivepython.org/runestone/static/pythonds/SortSearch/TheInsertionSort.html
+
+https://en.wikipedia.org/wiki/Insertion_sort
+
+For the merge sort algorithm we referenced:
+http://interactivepython.org/runestone/static/pythonds/SortSearch/TheMergeSort.html
+
+https://en.wikipedia.org/wiki/Merge_sort
