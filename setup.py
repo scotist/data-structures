@@ -1,3 +1,4 @@
+"""Setup for data structures."""
 from setuptools import setup
 
 setup(

@@ -47,35 +47,74 @@ class Bst(object):
 
     def insert(self, value):
         """Insert value into tree if not present."""
-        if self.contains(value):
-            return
         if self.value is None:
             self.value = value
-        try:
-            if value > self.value:
-                if not self.right_child:
-                    self.right_child = Bst(parent=self, value=value)
-                else:
-                    self.right_child.insert(value)
-            elif value < self.value:
-                if not self.left_child:
-                    self.left_child = Bst(parent=self, value=value)
-                else:
-                    self.left_child.insert(value)
-        except TypeError:
+        if not isinstance(value, type(self.value)):
             raise TypeError("Cannot mix types in a binary search tree.")
+        if value == self.value:
+            return
+        if value > self.value:
+            insert_name = "right_child"
+        else:
+            insert_name = "left_child"
+        insert_child = getattr(self, insert_name)
+        if insert_child is None:
+            setattr(self, insert_name, Bst(parent=self, value=value))
+        else:
+            insert_child.insert(value)
+        self.rebalance()
+
+    def rebalance(self):
+        """Rotate in place as necessary to ensure tree is balanced."""
+        new_balance = self.balance()
+        if new_balance < -1:
+            self._rotate_left()
+        elif new_balance > 1:
+            self._rotate_right()
+
+    def _rotate_left(self):
+        pivot = self.right_child
+        if pivot.balance() > 0:
+            pivot._rotate_right()
+        rr_grandchild = pivot.right_child
+        other_node = self.left_child
+        floater = pivot.left_child
+
+        self.value, pivot.value = pivot.value, self.value
+        self.right_child = rr_grandchild
+
+        if other_node is not None:
+            other_node.parent = floater
+        pivot.right_child, pivot.left_child = floater, other_node
+
+        self.left_child = pivot
+
+    def _rotate_right(self):
+        pivot = self.left_child
+        if pivot.balance() < 0:
+            pivot._rotate_left()
+        ll_grandchild = pivot.left_child
+        other_node = self.right_child
+        floater = pivot.right_child
+
+        self.value, pivot.value = pivot.value, self.value
+        self.left_child = ll_grandchild
+
+        if other_node is not None:
+            other_node.parent = floater
+        pivot.left_child, pivot.right_child = floater, other_node
+
+        self.right_child = pivot
 
     def _search(self, value):
         """Search for value in tree."""
         if self.value == value:
             return self
-        left_contains = None
-        right_contains = None
-        if self.left_child is not None:
-            left_contains = self.left_child._search(value)
-        if self.right_child is not None:
-            right_contains = self.right_child._search(value)
-        return left_contains or right_contains
+        for child in self._children():
+            result = child._search(value)
+            if result:
+                return result
+        return None
 
     def contains(self, value):
         """Return True if value in tree."""
@@ -85,22 +124,14 @@ class Bst(object):
         """Return size of tree."""
         if self.value is None:
             return 0
-        if not self.left_child and not self.right_child:
-            return 1
-        sizes = [child.size()
-                 for child in (self.left_child, self.right_child)
-                 if child is not None]
-        return sum(sizes) + 1
+        sizes = [child.size() for child in self._children()]
+        return sum(sizes + [1])
 
     def depth(self):
         """Return number of levels in the tree."""
         if self.value is None:
             return 0
-        if not self.left_child and not self.right_child:
-            return 1
-        depths = [child.depth()
-                  for child in (self.left_child, self.right_child)
-                  if child is not None]
+        depths = [child.depth() for child in self._children()] or [0]
         return max(depths) + 1
 
     def balance(self):
@@ -128,20 +159,14 @@ class Bst(object):
         """Traverse tree with pre-order traversal."""
         if self.value is not None:
             yield self.value
-        if self.left_child is not None:
-            for item in self.left_child.pre_order():
-                yield item
-        if self.right_child is not None:
-            for item in self.right_child.pre_order():
+        for child in self._children():
+            for item in child.pre_order():
                 yield item
 
     def post_order(self):
         """Traverse tree with post-order traversal."""
-        if self.left_child is not None:
-            for item in self.left_child.post_order():
-                yield item
-        if self.right_child is not None:
-            for item in self.right_child.post_order():
+        for child in self._children():
+            for item in child.post_order():
                 yield item
         if self.value is not None:
             yield self.value
@@ -151,44 +176,34 @@ class Bst(object):
         q = Queue()
         q.enqueue(self)
         while q.size() > 0:
-            print(q.size())
             tree = q.dequeue()
             if tree.value is not None:
                 yield tree.value
-            if tree.left_child is not None:
-                q.enqueue(tree.left_child)
-            if tree.right_child is not None:
-                q.enqueue(tree.right_child)
+            for child in tree._children():
+                q.enqueue(child)
 
     def delete(self, value):
         """Delete value from tree."""
-        deletable = self._search(value)
-        if not deletable:
-            return
-        if deletable.parent is not None:
-            if deletable.parent.left_child == deletable:
-                deletable.parent.left_child = None
-            elif deletable.parent.right_child == deletable:
-                deletable.parent.right_child = None
-            deletable.parent = None
-            for value in deletable.breadth_first():
-                if value != deletable.value:
-                    self.insert(value)
-        else:
-            if self.right_child.size() > self.left_child.size():
-                largest_child = self.right_child
-                insertable = self.left_child
-            else:
-                largest_child = self.left_child
-                insertable = self.right_child
-            self.right_child = largest_child.right_child
-            self.left_child = largest_child.left_child
-            self.value = largest_child.value
-            self.parent = None
-            del largest_child
-            for value in insertable.breadth_first():
-                self.insert(value)
-            del insertable
+        if self.value == value:
+            deleteable = self
+            nullable = ['left_child', 'right_child']
+        elif self.left_child is not None and self.left_child.value == value:
+            deleteable = self.left_child
+            nullable = ['left_child']
+        elif self.right_child is not None and self.right_child.value == value:
+            deleteable = self.right_child
+            nullable = ['right_child']
+        try:
+            deleteable.value = None
+            vals = [val for val in deleteable.breadth_first()]
+            for attr in nullable:
+                setattr(self, attr, None)
+            for val in vals:
+                self.insert(val)
+        except NameError:
+            for child in self._children():
+                child.delete(value)
+        self.rebalance()
 
 
 if __name__ == "__main__":

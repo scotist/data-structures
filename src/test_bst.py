@@ -4,6 +4,17 @@ from bst import Bst
 import pytest
 import types
 import random
+from collections import namedtuple
+import math
+
+Fixture = namedtuple('Fixture', ['seq', 'instance', 'size', 'depth',
+                     'delete_value', 'insert_value', 'undeleted', 'in_order'])
+
+EDGE_CASES = [[0, 1, 2], [2, 1, 0], [0, 2, 1], [2, 0, 1],
+              [1, 2, 0], [1, 0, 2], [], [0], [0, 1], [1, 0]]
+
+RANDOM_INSTANCES = [random.sample(range(1000),
+                    random.randrange(1, 100)) for n in range(50)]
 
 
 @pytest.fixture
@@ -13,11 +24,47 @@ def empty_instance():
     return tree
 
 
+@pytest.fixture(params=EDGE_CASES + RANDOM_INSTANCES)
+def multi_tree(request):
+    """Simple tree fixture."""
+    seq = request.param
+    tree = Bst()
+    for n in seq:
+        tree.insert(n)
+    undeleted = seq[:]
+    if seq:
+        delete_value = random.choice(seq)
+        undeleted.remove(delete_value)
+    else:
+        delete_value = None
+    size = len(seq)
+    try:
+        depth = math.floor(math.log(size, 2)) + 1
+    except ValueError:
+        depth = 0
+    in_order = list(sorted(seq))
+    return Fixture(seq, tree, size,
+                   depth,
+                   delete_value,
+                   random.choice(range(1001, 2000)),
+                   undeleted,
+                   in_order)
+
+
 @pytest.fixture
 def instance():
     """Full tree fixture."""
     tree = Bst()
     for n in range(20):
+        tree.insert(n)
+    return tree
+
+
+@pytest.fixture
+def left_left_instance():
+    """Left-balanced fixture."""
+    tree = Bst()
+    for n in range(0, 20, -1):
         tree.insert(n)
     return tree
 
@@ -39,6 +86,25 @@ def deleteable_instance(instance2):
     delete_value = random.choice(insertions)
     insertions.remove(delete_value)
     return (instance2, insertions, delete_value)
+
+
+def test_tree_correct(multi_tree):
+    """Test that any given tree is correct in relationships."""
+    assert tree_checker(multi_tree.instance)
+
+
+def tree_checker(tree):
+    """"Help function to check binary tree correctness."""
+    if tree is None or tree.value is None:
+        return True
+
+    if tree.right_child is not None and tree.right_child.value < tree.value:
+        return False
+    if tree.left_child is not None and tree.left_child.value > tree.value:
+        return False
+
+    return all([tree_checker(tree.left_child),
+                tree_checker(tree.right_child)])
 
 
 def test_new_empty_tree(empty_instance):
@@ -100,7 +166,7 @@ def test_size_empty(empty_instance):
 
 def test_depth(instance):
     """Test depth method."""
-    assert instance.depth() == 20
+    assert instance.depth() == 5
 
 
 def test_depth_empty(empty_instance):
@@ -108,14 +174,27 @@ def test_depth_empty(empty_instance):
     assert empty_instance.depth() == 0
 
 
-def test_depth_fun(instance2):
-    """Test depth method on more complex tree."""
-    assert instance2.depth() == 5
+def test_balance(multi_tree):
+    """Test balance."""
+    assert -1 <= multi_tree.instance.balance() <= 1
+
+
+def test_depth_simple(multi_tree):
+    """Test depth method on simple instances."""
+    if multi_tree.size < 5:
+        assert multi_tree.instance.depth() == multi_tree.depth
+    else:
+        abs(multi_tree.instance.depth() - multi_tree.depth) < 2
+
+
+def test_size_simple(multi_tree):
+    """Test."""
+    assert multi_tree.instance.size() == multi_tree.size
 
 
 def test_balance_left(instance2):
     """Test balance method on left-unbalanced tree."""
-    assert instance2.balance() == 1
+    assert instance2.balance() == -1
 
 
 def test_balance_balanced(instance2):
@@ -126,21 +205,21 @@ def test_balance_balanced(instance2):
 
 
 def test_balance_right(instance2):
-    """Test balance method on left-unbalanced tree."""
+    """Test balance method further."""
     instance2.insert(20)
     instance2.insert(21)
     instance2.insert(22)
-    assert instance2.balance() == -1
+    assert instance2.balance() == 0
 
 
 def test_balance_extreme_right(instance):
-    """Test balance method on extremely-unbalanced tree."""
-    assert instance.balance() == -19
+    """Test self-balance method on extremely-unbalanced tree."""
+    assert -2 < instance.balance() < 2
 
 
-def test_in_order(instance2):
+def test_in_order(multi_tree):
     """Test in-order traversal method."""
-    assert list(instance2.in_order()) == [4, 7, 8, 9, 10, 11, 12, 17, 18, 19]
+    assert list(multi_tree.instance.in_order()) == multi_tree.in_order
 
 
 def test_in_order_empty(empty_instance):
@@ -150,7 +229,7 @@ def test_in_order_empty(empty_instance):
 
 def test_pre_order(instance2):
     """Test pre-order traversal method."""
-    assert list(instance2.pre_order()) == [11, 9, 8, 7, 4, 10, 17, 12, 19, 18]
+    assert list(instance2.pre_order()) == [9, 7, 4, 8, 17, 11, 10, 12, 19, 18]
 
 
 def test_pre_order_empty(empty_instance):
@@ -160,7 +239,7 @@ def test_pre_order_empty(empty_instance):
 
 def test_post_order(instance2):
     """Test post-order traversal method."""
-    assert list(instance2.post_order()) == [4, 7, 8, 10, 9, 12, 18, 19, 17, 11]
+    assert list(instance2.post_order()) == [4, 8, 7, 10, 12, 11, 18, 19, 17, 9]
 
 
 def test_post_order_empty(empty_instance):
@@ -170,7 +249,8 @@ def test_post_order_empty(empty_instance):
 
 def test_breadth_first(instance2):
     """Test breadth-first traversal method."""
-    assert list(instance2.breadth_first()) == [11, 9, 17, 8, 10, 12, 19, 7, 18, 4]
+    assert list(instance2.breadth_first()) == [9, 7, 17, 4, 8, 11, 19,
+                                               10, 12, 18]
 
 
 def test_breadth_first_empty(empty_instance):
@@ -187,52 +267,45 @@ def test_generators(instance):
                 instance.breadth_first]])
 
 
-def test_delete_contains(deleteable_instance):
+def test_delete_contains(multi_tree):
     """Test that tree does not contain deleted value after delete."""
-    instance, other_values, delete_value = deleteable_instance
-    instance.delete(delete_value)
-    assert not instance.contains(delete_value)
+    multi_tree.instance.delete(multi_tree.delete_value)
+    if multi_tree.size:
+        assert not multi_tree.instance.contains(multi_tree.delete_value)
 
 
-def test_size_after_delete(deleteable_instance):
+def test_size_after_delete(multi_tree):
     """Test that tree is one smaller after deletion."""
-    instance, other_values, delete_value = deleteable_instance
-    size = instance.size()
-    instance.delete(delete_value)
-    new_size = instance.size()
-    assert new_size == len(other_values) == size - 1
+    if multi_tree.size:
+        multi_tree.instance.delete(multi_tree.delete_value)
+        new_size = multi_tree.instance.size()
+        assert new_size == len(multi_tree.undeleted) == multi_tree.size - 1
 
 
-def test_balance_after_delete(deleteable_instance):
+def test_balance_after_delete(multi_tree):
     """Test that the tree is not worse balanced after deletion."""
-    instance, other_values, delete_value = deleteable_instance
-    deletable = instance._search(delete_value)
-    if all([deletable.left_child, deletable.right_child]):
-        balance = instance.balance()
-        instance.delete(delete_value)
-        new_balance = instance.balance()
-        assert abs(new_balance) <= abs(balance)
+    multi_tree.instance.delete(multi_tree.delete_value)
+    assert -2 < multi_tree.instance.balance() < 2
 
 
-def test_contains_undeleted(deleteable_instance):
+def test_contains_undeleted(multi_tree):
     """Test that tree still contains all undeleted values."""
-    instance, other_values, delete_value = deleteable_instance
-    instance.delete(delete_value)
-    assert all([instance.contains(value) for value in other_values])
+    multi_tree.instance.delete(multi_tree.delete_value)
+    assert all([multi_tree.instance.contains(value)
+                for value in multi_tree.undeleted])
 
 
-def test_delete_not_contained(instance2):
+def test_delete_not_contained(multi_tree):
     """Test that delete leaves the list intact if value not in tree."""
-    first_balance = instance2.balance()
-    instance2.delete(999)
-    assert instance2.balance() == first_balance
+    balance_before = multi_tree.instance.balance()
+    multi_tree.instance.delete(9999999999999)
+    assert multi_tree.instance.balance() == balance_before
 
 
-def test_delete_not_contained_2(instance2):
+def test_delete_not_contained_2(multi_tree):
     """Test that delete leaves the list intact if value not in tree."""
-    first_size = instance2.size()
-    instance2.delete(999)
-    assert instance2.size() == first_size
+    multi_tree.instance.delete(9999999999999)
+    assert multi_tree.instance.size() == multi_tree.size
 
 
 def test_delete_empty(empty_instance):
@@ -246,3 +319,109 @@ def test_delete_root(instance2):
     values = ([17, 9, 10, 8, 7, 4, 12, 19, 18])
     assert list(instance2.in_order()) == sorted(values)
     assert instance2.size() == len(values)
+
+
+def test_tree_correct_after_delete(multi_tree):
+    """Make sure that the tree is correct after a deletion."""
+    if multi_tree.size:
+        multi_tree.instance.delete(multi_tree.delete_value)
+        assert tree_checker(multi_tree.instance)
+
+
+def test_delete_root_1(empty_instance):
+    """Test delete root when root has no children."""
+    empty_instance.insert(1)
+    assert empty_instance.size() == 1
+    empty_instance.delete(1)
+    assert empty_instance.size() == 0
+
+
+def test_delete_root_2(empty_instance):
+    """Test delete root when root has one child."""
+    empty_instance.insert(1)
+    empty_instance.insert(2)
+    assert empty_instance.size() == 2
+    empty_instance.delete(1)
+    assert empty_instance.size() == 1
+
+
+def test_delete_root_3(empty_instance):
+    """Test delete root when root has two children."""
+    empty_instance.insert(1)
+    empty_instance.insert(2)
+    empty_instance.insert(3)
+    assert empty_instance.size() == 3
+    empty_instance.delete(1)
+    assert empty_instance.size() == 2
+
+
+@pytest.mark.parametrize('seq', [seq for seq in EDGE_CASES if len(seq) == 3])
+def test_rotated_root_after_insert(seq):
+    """Test that value at top of tree is what we expect after rotate."""
+    tree = Bst()
+    expected_root_val = list(sorted(seq))[1]
+    tree.insert(seq[0])
+    tree.insert(seq[1])
+    assert tree.value == seq[0]
+    tree.insert(seq[2])
+    assert tree.value == expected_root_val
+
+
+@pytest.mark.parametrize('seq', [seq for seq in EDGE_CASES if len(seq) == 3])
+def test_rotated_children_after_insert(seq):
+    """Test that children from top of tree are what we expect after rotate."""
+    tree = Bst()
+    expected_left_child = list(sorted(seq))[0]
+    expected_right_child = list(sorted(seq))[2]
+    for val in seq:
+        tree.insert(val)
+    assert all([tree.left_child.value == expected_left_child,
+                tree.right_child.value == expected_right_child])
+
+
+def test_rotated_root_after_delete_rr():
+    """Test that tree rotates as expected after deleting from lighter side."""
+    tree = Bst()
+    for val in [2, 1, 3, 4]:
+        tree.insert(val)
+    assert tree.value == 2
+    tree.delete(1)
+    assert all([tree.value == 3,
+                tree.left_child.value == 2,
+                tree.right_child.value == 4])
+
+
+def test_rotated_root_after_delete_rl():
+    """Test that tree rotates as expected after deleting from lighter side."""
+    tree = Bst()
+    for val in [2, 1, 5, 4]:
+        tree.insert(val)
+    assert tree.value == 2
+    tree.delete(1)
+    assert all([tree.value == 4,
+                tree.left_child.value == 2,
+                tree.right_child.value == 5])
+
+
+def test_rotated_root_after_delete_ll():
+    """Test that tree rotates as expected after deleting from heavier side."""
+    tree = Bst()
+    for val in [3, 4, 2, 1]:
+        tree.insert(val)
+    assert tree.value == 3
+    tree.delete(4)
+    assert all([tree.value == 2,
+                tree.left_child.value == 1,
+                tree.right_child.value == 3])
+
+
+def test_rotated_root_after_delete_l2():
+    """Test that tree rotates as expected after deleting from heavier side."""
+    tree = Bst()
+    for val in [4, 5, 2, 3]:
+        tree.insert(val)
+    assert tree.value == 4
+    tree.delete(5)
+    assert all([tree.value == 3,
+                tree.left_child.value == 2,
+                tree.right_child.value == 4])
