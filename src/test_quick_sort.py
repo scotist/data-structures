@@ -49,13 +49,14 @@ def test_stable_random(seq):
 def test_stable_random_2(seq):
     """Test that stability is maintained when sorting to end of list."""
     from quick_sort import quick_sort
+    if len(seq) < 3:
+        return
     index_a, index_b = sorted(random.sample(range(len(seq)), 2))
     val_a, val_b = 1000, 1000
     seq[index_a], seq[index_b] = val_a, val_b
     seq = quick_sort(seq)
-    if len(seq) > 3:
-        assert seq[-1] is val_b
-        assert seq[-2] is val_a
+    assert seq[-1] is val_b
+    assert seq[-2] is val_a
 
 
 @pytest.mark.parametrize("seq", RANDOM_INSTANCES)
@@ -71,6 +72,5 @@ def test_stable_random_3(seq):
     seq[index_b] = val_b
     seq = quick_sort(seq)
     index_a = seq.index(val_a)
-    if len(seq) > 3:
-        assert seq[index_a + 1] is val_b
+    assert seq[index_a + 1] is val_b
 

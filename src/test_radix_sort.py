@@ -53,14 +53,15 @@ def test_stable_random(seq):
 def test_stable_random_2(seq):
     """Test that stability fails when sorting to end of list."""
     from radix_sort import radix_sort
+    if len(seq) < 3:
+        return
     seq = list(seq)
     index_a, index_b = sorted(random.sample(range(len(seq)), 2))
     val_a, val_b = 1000, 1000
     seq[index_a], seq[index_b] = val_a, val_b
     radix_sort(seq)
-    if len(seq) > 3:
-        assert seq[-1] is val_a
-        assert seq[-2] is val_b
+    assert seq[-1] is val_a
+    assert seq[-2] is val_b
 
 
 @pytest.mark.parametrize("seq", RANDOM_INSTANCES)
