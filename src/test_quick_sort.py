@@ -10,7 +10,7 @@ RANDOM_INSTANCES = [random.sample(range(1000),
 
 @pytest.mark.parametrize("seq", RANDOM_INSTANCES)
 def test_quick_sort(seq):
-    """Test insertion sort results equal build-in python sort results."""
+    """Test insertion sort results equal built-in python sort results."""
     from quick_sort import quick_sort
     assert quick_sort(seq) == sorted(seq)
 
