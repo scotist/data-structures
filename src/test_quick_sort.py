@@ -63,7 +63,7 @@ def test_stable_random_2(seq):
 def test_stable_random_3(seq):
     """Test stability property on random lists with random duplicate values."""
     from quick_sort import quick_sort
-    if len(seq) < 2:
+    if len(seq) < 4:
         return
     index_a = random.randrange(len(seq) - 1)
     index_b = random.randrange(index_a + 1, len(seq))
