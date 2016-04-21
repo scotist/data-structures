@@ -2,10 +2,10 @@
 """Implement radix sort algorithm in Python."""
 
 
-def radix_sort(a_list):
-    """Radix sort for positive numbers up to one hundred thousand."""
+def radix_sort(a_list, places=5):
+    """Radix sort for positive numbers up a specified number of decimal places."""
     buckets = [[] for x in range(10)]
-    for digit in range(0, 5):
+    for digit in range(places):
         for number in a_list:
             buckets[number // 10 ** digit % 10].append(number)
         del a_list[:]
