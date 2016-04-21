@@ -46,3 +46,6 @@ For the quick sort we used referenced:
 http://en.literateprograms.org/Quicksort_(Python)
 
 The above implements quicksort using list comprehensions. We also made an implementation using plain iterations, but found that the latter method was significantly slower.
+
+For the radix sort algorithm we adapted one found at:
+https://codehost.wordpress.com/2011/07/22/radix-sort/
