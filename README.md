@@ -41,3 +41,8 @@ For the merge sort algorithm we referenced:
 http://interactivepython.org/runestone/static/pythonds/SortSearch/TheMergeSort.html
 
 https://en.wikipedia.org/wiki/Merge_sort
+
+For the quick sort we used referenced:
+http://en.literateprograms.org/Quicksort_(Python)
+
+The above implements quicksort using list comprehensions. We also made an implementation using plain iterations, but found that the latter method was significantly slower.

@@ -58,9 +58,7 @@ def test_stable_random_2(seq):
     index_a, index_b = sorted(random.sample(range(len(seq)), 2))
     val_a, val_b = 1000, 1000
     seq[index_a], seq[index_b] = val_a, val_b
-    print(seq)
     merge_sort(seq)
-    print(seq)
     assert seq[-1] is val_a
     assert seq[-2] is val_b
 
