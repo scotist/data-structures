@@ -69,3 +69,6 @@ Quick Sort:
 Best case average time: 0.084
 Worst case average time: 0.088
 Stability: Fully stable
+
+For the radix sort algorithm we adapted one found at:
+https://codehost.wordpress.com/2011/07/22/radix-sort/
