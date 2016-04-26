@@ -20,7 +20,12 @@ class HashTable(object):
         if not isinstance(key, str):
             raise TypeError('Hash table only accepts strings as keys.')
         hashed_key = self._hash(key)
-        self._table[hashed_key].append((key, value))
+        bucket = self._table[hashed_key]
+        try:
+            bucket.remove((key, value))
+        except ValueError:
+            pass
+        bucket.append((key, value))
 
     def get(self, key):
         """Retrieve value from table given key."""
