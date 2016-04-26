@@ -1,6 +1,6 @@
 [![Travis](https://travis-ci.org/scotist/data-structures.svg?branch=master)](https://travis-ci.org/scotist/data-structures.svg?branch=master)
 
-Data Structures
+###Data Structures
 
 Implements various data structures of increasing complexity with python
 
@@ -10,8 +10,8 @@ ______________
 
 
 The binary search tree and tests include three depth-first traversal methods: in-order, pre-order, and post order; and breadth-first traversal.
-The binary search tree implements a delete method, which will delete a given value from the tree, while keeping every other value and maintaining the balance of the tree. Also included are basic implementations of a hash table and the insertion sort algorithm.
-
+The binary search tree implements a delete method, which will delete a given value from the tree, while keeping every other value and maintaining the balance of the tree.
+Also included are basic implementations of a hash table, as well as insertion sort, merge sort and quick sort algorithms.
 
 Half of the modules are a joint project of Michael Sullivan and A.J. Wohlfert, and the other half of Michael Sullivan and Will Weatherford.
 
@@ -27,10 +27,45 @@ parenthetics.py implements the same function as paren_aj.py, but with a differen
 
 ______________
 
-Sources:
+###Sources:
 
 Our graph traversal functions adapt the algorithms found at:
 http://code.activestate.com/recipes/576723-dfs-and-bfs-graph-traversal/
 
 Inspiration for the insertion sort algorithm found at:
 http://interactivepython.org/runestone/static/pythonds/SortSearch/TheInsertionSort.html
+
+https://en.wikipedia.org/wiki/Insertion_sort
+
+For the merge sort algorithm we referenced:
+http://interactivepython.org/runestone/static/pythonds/SortSearch/TheMergeSort.html
+
+https://en.wikipedia.org/wiki/Merge_sort
+
+For the quick sort we used referenced:
+http://en.literateprograms.org/Quicksort_(Python)
+
+The above implements quicksort using list comprehensions. We also made an implementation using plain iterations, but found that the latter method was significantly slower.
+
+___________________________
+
+###Sorting algorithm comparisons
+
+We tested each algorithm with a list of 990 items. We collected the average time across 10000 attempts on the best case (already sorted) and worst case (reverse sorted) lists.
+
+Insertion Sort:
+Best case average time: 0.00029
+Worst case average time: 0.00032
+Stability: Fully stable
+
+
+Merge Sort:
+Best case average time: 0.0066
+Worst case average time: 0.0063
+Stability: Not stable with two identical items which will be sorted to far right (largest).
+
+
+Quick Sort:
+Best case average time: 0.084
+Worst case average time: 0.088
+Stability: Fully stable
