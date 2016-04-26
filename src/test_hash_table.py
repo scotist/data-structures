@@ -43,7 +43,7 @@ def test_hash_int(sample_table, value):
 def test_hash_type_error(sample_table, value):
     """Test that any input but string raises type error."""
     with pytest.raises(TypeError):
-        sample_table._hash(value)
+        sample_table.set(value, value)
 
 
 @pytest.mark.parametrize("value", SAMPLE_STRINGS)

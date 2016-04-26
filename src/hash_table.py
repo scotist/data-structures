@@ -12,18 +12,20 @@ class HashTable(object):
 
     def _hash(self, key):
         """Render key string as integer with additive algorithm."""
-        if not isinstance(key, str):
-            raise TypeError('please give us a string')
         hashnum = sum(ord(char) for char in key)
         return hashnum % self.slots
 
     def set(self, key, value):
         """Store given value in table using given key."""
+        if not isinstance(key, str):
+            raise TypeError('Hash table only accepts strings as keys.')
         hashed_key = self._hash(key)
         self._table[hashed_key].append((key, value))
 
     def get(self, key):
         """Retrieve value from table given key."""
+        if not isinstance(key, str):
+            raise TypeError('Hash table only accepts strings as keys.')
         hashed_key = self._hash(key)
         for tag, value in self._table[hashed_key]:
             if key == tag:
