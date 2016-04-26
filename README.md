@@ -8,10 +8,23 @@ This repo holds sample code for some classic data structures, implemented in Pyt
 
 ______________
 
-
+### Binary Search Tree
 The binary search tree and tests include three depth-first traversal methods: in-order, pre-order, and post order; and breadth-first traversal.
+
 The binary search tree implements a delete method, which will delete a given value from the tree, while keeping every other value and maintaining the balance of the tree.
+
+### Hash Table
+The hash table stores key-value pairs in numerical buckets where the bucket number is determined by the simple additive hashing algorithm. The hash table is initialized with an integer which determines the number of buckets and accepts only strings as keys.
+
+
+### Trie
+The trie is a tree data structure used to store an associative array where we care about the path to the leaf rather than the individual content of any node. Unlike the binary search tree, a node of the trie can contain any number of branches. Our implementation only accepts English words as strings. It has an insert method which accepts tokens corresponding to a single word, and a contains method which returns true or false depending on whether it is present in the trie.
+
+
+### Sort Algorithms
 Also included are basic implementations of a hash table, as well as insertion sort, merge sort and quick sort algorithms.
+
+
 
 Half of the modules are a joint project of Michael Sullivan and A.J. Wohlfert, and the other half of Michael Sullivan and Will Weatherford.
 
