@@ -99,7 +99,7 @@ def test_insert_bad_input_2(simple_trie):
 
 
 def test_dictionary_false(all_words, invalid_word):
-    """Test that trie containing dictionary words does not contain phony words."""
+    """Test trie containing dictionary words does not contain phony words."""
     assert not all_words.contains(invalid_word)
 
 
