@@ -53,17 +53,18 @@ def test_set_get(sample_table, value):
     assert sample_table.get(value) == value
 
 
+def test_set_get_1():
+    """Test set and get on a single case."""
+    one_table = HashTable(4)
+    one_table.set("hello", "world")
+    assert one_table.get("hello") == "world"
+
+
 def test_get_fail(sample_table):
     """Test table return none when key not present."""
     for string in SAMPLE_STRINGS:
         sample_table.set(string, string)
     assert sample_table.get("bub") is None
-
-
-@pytest.mark.parametrize("value", SAMPLE_STRINGS)
-def test_table_size(sample_table, value):
-    """Test size of hash table."""
-    assert -1 < sample_table._hash(value) < sample_table.slots
 
 
 def test_correct_hash(sample_table):
@@ -81,9 +82,25 @@ def test_collision():
     assert ("a", "hello") in small_table._table[1]
     assert ("c", "world") in small_table._table[1]
     assert small_table._table[0] == []
+    assert small_table.get("a") == "hello"
+    assert small_table.get("c") == "world"
+
+
+@pytest.mark.parametrize("value", SAMPLE_STRINGS)
+def test_hash_in_bucket_range(sample_table, value):
+    """Test that number returned by hash algo is within set bucket range."""
+    assert -1 < sample_table._hash(value) < sample_table.slots
 
 
 def test_set_get_big(words_table):
     """Test hashing and retrieving on big set of values."""
     for word in get_words():
         assert words_table.get(word) == word
+
+
+def test_insert_overwrite():
+    """Test that inserting new value for key overwrites old value."""
+    small_table = HashTable(2)
+    small_table.set("a", "hello")
+    small_table.set("a", "hello")
+    assert len(small_table._table[1]) == 1
