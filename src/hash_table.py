@@ -35,4 +35,3 @@ class HashTable(object):
         for tag, value in self._table[hashed_key]:
             if key == tag:
                 return value
-        return None
