@@ -102,5 +102,6 @@ def test_insert_overwrite():
     """Test that inserting new value for key overwrites old value."""
     small_table = HashTable(2)
     small_table.set("a", "hello")
-    small_table.set("a", "hello")
-    assert len(small_table._table[1]) == 1
+    assert small_table.get("a") == "hello"
+    small_table.set("a", "goodbye")
+    assert small_table.get("a") == "goodbye"

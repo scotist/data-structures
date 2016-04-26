@@ -21,10 +21,10 @@ class HashTable(object):
             raise TypeError('Hash table only accepts strings as keys.')
         hashed_key = self._hash(key)
         bucket = self._table[hashed_key]
-        try:
-            bucket.remove((key, value))
-        except ValueError:
-            pass
+        for existing_key, existing_value in bucket[:]:
+            if key == existing_key:
+                bucket.remove((existing_key, existing_value))
+                break
         bucket.append((key, value))
 
     def get(self, key):
