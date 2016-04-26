@@ -1,8 +1,10 @@
 [![Travis](https://travis-ci.org/scotist/data-structures.svg?branch=master)](https://travis-ci.org/scotist/data-structures.svg?branch=master)
 
-###Data Structures
+##Data Structures
 
 Implements various data structures of increasing complexity with python
+
+### Simpler Structures
 
 This repo holds sample code for some classic data structures, implemented in Python, including singly- and doubly-linked lists and stacks, heaps, queues, deques, priority queues, and graphs. Singly-linked lists are convenient for keeping a group of data nodes in order; adding and removing them is simple and efficient. They are most useful when we only need to traverse our data in one direction. Doubly-linked lists make their nodes more accessible since they can be inserted or removed at either end of the list; but navigating the list is costlier. Stacks, queues, and deques are more refined implementations.  Priority queues, heaps, and graphs illustrate more complex ways nodes of data can be related to each other.
 
@@ -22,7 +24,38 @@ The trie is a tree data structure used to store an associative array where we ca
 
 
 ### Sort Algorithms
-Also included are basic implementations of a hash table, as well as insertion sort, merge sort and quick sort algorithms.
+Also included are implementations of the  insertion sort, merge sort, quick sort, and radix sort algorithms. Performance comparisons are as follows:
+
+
+We tested each algorithm with a list of 990 items. We collected the average time across 10000 attempts on the best case (already sorted) and worst case (reverse sorted) lists.
+
+Insertion Sort:
+Best case average time: 0.00029
+Worst case average time: 0.00032
+Stability: Fully stable
+In place: Yes
+
+
+Merge Sort:
+Best case average time: 0.0066
+Worst case average time: 0.0063
+Stability: Not stable with two identical items which will be sorted to far right (largest).
+In place: Yes
+
+
+Quick Sort:
+Best case average time: 0.084
+Worst case average time: 0.088
+Stability: Fully stable
+In place: No
+
+
+Radix Sort:
+Best case average time: 0.00089
+Worst case average time: 0.00091
+Stability: Fully stable
+In place: No
+
 
 
 
@@ -64,33 +97,3 @@ For the radix sort algorithm we adapted one found at:
 https://codehost.wordpress.com/2011/07/22/radix-sort/
 ___________________________
 
-###Sorting algorithm comparisons
-
-We tested each algorithm with a list of 990 items. We collected the average time across 10000 attempts on the best case (already sorted) and worst case (reverse sorted) lists.
-
-Insertion Sort:
-Best case average time: 0.00029
-Worst case average time: 0.00032
-Stability: Fully stable
-In place: Yes
-
-
-Merge Sort:
-Best case average time: 0.0066
-Worst case average time: 0.0063
-Stability: Not stable with two identical items which will be sorted to far right (largest).
-In place: Yes
-
-
-Quick Sort:
-Best case average time: 0.084
-Worst case average time: 0.088
-Stability: Fully stable
-In place: No
-
-
-Radix Sort:
-Best case average time: 0.00089
-Worst case average time: 0.00091
-Stability: Fully stable
-In place: No
