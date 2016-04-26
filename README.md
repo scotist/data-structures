@@ -47,6 +47,8 @@ http://en.literateprograms.org/Quicksort_(Python)
 
 The above implements quicksort using list comprehensions. We also made an implementation using plain iterations, but found that the latter method was significantly slower.
 
+For the radix sort algorithm we adapted one found at:
+https://codehost.wordpress.com/2011/07/22/radix-sort/
 ___________________________
 
 ###Sorting algorithm comparisons
@@ -57,18 +59,25 @@ Insertion Sort:
 Best case average time: 0.00029
 Worst case average time: 0.00032
 Stability: Fully stable
+In place: Yes
 
 
 Merge Sort:
 Best case average time: 0.0066
 Worst case average time: 0.0063
 Stability: Not stable with two identical items which will be sorted to far right (largest).
+In place: Yes
 
 
 Quick Sort:
 Best case average time: 0.084
 Worst case average time: 0.088
 Stability: Fully stable
+In place: No
 
-For the radix sort algorithm we adapted one found at:
-https://codehost.wordpress.com/2011/07/22/radix-sort/
+
+Radix Sort:
+Best case average time: 0.00089
+Worst case average time: 0.00091
+Stability: Fully stable
+In place: No
