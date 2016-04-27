@@ -69,7 +69,8 @@ class Trie(object):
         results = []
         for idx in range(len(start)):
             try:
-                results.append(list(self.traversal(start[:idx + 1]))[:4])
+                results.append(
+                    list(sorted(self.traversal(start[:idx + 1])))[:4])
             except ValueError:
                 results.append([])
         print(results)

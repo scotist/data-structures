@@ -9,7 +9,7 @@ INVALID_WORDS = ['lsf', 'mvniersdn', 'adsklieu', 'zqx', 'cdu', 'quc',
 GROWTH_WORDS = ['set', 'sets', 'setter', 'settle', 'settled', 'settler',
                 'settling', 'stow', 'stop', 'stock', 'sty', 'style',
                 'stall', 'stomp', 'stag',
-                'stalled']
+                'stalled', 'at', 'ate']
 
 
 def get_words():
@@ -157,6 +157,34 @@ def test_traversal_7(simple_trie):
         simple_trie.insert(item)
     with pytest.raises(ValueError):
         list(simple_trie.traversal('x'))
+
+
+def test_autocomplete_1(simple_trie):
+    """Test autocomplete on an empty trie."""
+    for item in GROWTH_WORDS:
+        assert simple_trie.autocomplete(item) == [[] for char in item]
+
+
+def test_autocomplete_2(simple_trie):
+    """Test autocomplete on populated trie."""
+    for item in GROWTH_WORDS:
+        simple_trie.insert(item)
+    assert simple_trie.autocomplete('attic') == [['at', 'ate'], ['at', 'ate'],
+                                                 [], [], []]
+
+
+def test_autocomplete_3(simple_trie):
+    """Test autocomplete on bad start input."""
+    for item in GROWTH_WORDS:
+        simple_trie.insert(item)
+    assert simple_trie.autocomplete('x') == [[]]
+
+
+def test_autocomplete_4(simple_trie):
+    """Test autocomplete on no start input."""
+    for item in GROWTH_WORDS:
+        simple_trie.insert(item)
+    assert simple_trie.autocomplete('') == []
 
 
 # def test_a_word(all_words, word_in_dictionary):
