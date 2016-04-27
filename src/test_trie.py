@@ -3,7 +3,13 @@
 import pytest
 
 
-INVALID_WORDS = ['lsf', 'mvniersdn', 'adsklieu', 'zqx', 'cdu', 'quc']
+INVALID_WORDS = ['lsf', 'mvniersdn', 'adsklieu', 'zqx', 'cdu', 'quc',
+                 'aeka-mei', 'cwefmoi\'sadlfmwe']
+
+GROWTH_WORDS = ['set', 'sets', 'setter', 'settle', 'settled', 'settler',
+                'settling', 'stow', 'stop', 'stock', 'sty', 'style',
+                'stall', 'stomp', 'stag',
+                'stalled']
 
 
 def get_words():
@@ -104,17 +110,37 @@ def test_dictionary_false(all_words, invalid_word):
 
 
 def test_traversal_1(simple_trie):
-    """Test depth-first traversal returns generator of inserted words."""
-    for item in INVALID_WORDS:
+    """Test depth-first traversal returns generator of dissimilar words."""
+    for item in GROWTH_WORDS:
         simple_trie.insert(item)
-    for item in simple_trie.traversal():
-        assert item in INVALID_WORDS
+    for item in GROWTH_WORDS:
+        assert item in list(simple_trie.traversal())
 
 
 def test_traversal_2(simple_trie):
     """Test traversal method on empty trie."""
     assert list(simple_trie.traversal()) == []
 
+
+def test_traversal_3(simple_trie):
+    """Test that traversal does not return item not in trie."""
+    for item in GROWTH_WORDS:
+        simple_trie.insert(item)
+    assert 'valid' not in list(simple_trie.traversal())
+
+
+def test_traversal_4(simple_trie):
+    """Test traversal gives us the right number of items."""
+    for item in GROWTH_WORDS:
+        simple_trie.insert(item)
+    assert len(GROWTH_WORDS) == len(list(simple_trie.traversal()))
+
+
+def test_traversal_5(simple_trie):
+    """Test depth-first traversal returns generator of inserted words with identical starts."""
+    for item in GROWTH_WORDS:
+        simple_trie.insert(item)
+    assert set(simple_trie.traversal()) == set(GROWTH_WORDS)
 
 # def test_a_word(all_words, word_in_dictionary):
 #     """For fun, separate test for each word in dictionary."""

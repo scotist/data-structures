@@ -44,11 +44,16 @@ class Trie(object):
 
     def traversal(self, current_dict=None, start=''):
         """Return all the words in the trie."""
+        # import pdb; pdb.set_trace()
+        print('entering new traversal round')
         if current_dict is None:
-            current_dict = self._dict
-        for letter, next_dict in current_dict.items():
+            current_dict = self._dict.copy()
+        for letter in current_dict:
+            print(letter)
+            print(current_dict[letter])
             if letter == WORD_TERMINUS:
                 yield start
             else:
-                self.traversal(current_dict=next_dict, start=start + letter)
+                for item in self.traversal(current_dict[letter], start + letter):
+                    yield item
 
