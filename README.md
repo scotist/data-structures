@@ -20,7 +20,7 @@ The hash table stores key-value pairs in numerical buckets where the bucket numb
 
 
 ### Trie
-The trie is a tree data structure used to store an associative array where we care about the path to the leaf rather than the individual content of any node. Unlike the binary search tree, a node of the trie can contain any number of branches. Our implementation only accepts English words as strings. It has an insert method which accepts tokens corresponding to a single word, and a contains method which returns true or false depending on whether it is present in the trie.
+The trie is a tree data structure used to store an associative array where we care about the path to the leaf rather than the individual content of any node. Unlike the binary search tree, a node of the trie can contain any number of branches. Our implementation only accepts English words as strings. It has an insert method which accepts tokens corresponding to a single word, a contains method which returns true or false depending on whether it is present in the trie, and a traversal method which produces a generator of all the tokens in the tree.
 
 
 ### Sort Algorithms
