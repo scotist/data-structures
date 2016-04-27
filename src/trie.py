@@ -44,10 +44,16 @@ class Trie(object):
 
     def traversal(self, start='', current_dict=None):
         """Return all the words in the trie."""
-        # import pdb; pdb.set_trace()
-        print('entering new traversal round')
-        if current_dict is None:
-            current_dict = self._dict.copy()
+        if not start:
+            current_dict = self._dict
+        elif current_dict is None:
+            current_dict = self._dict
+            for letter in start:
+                try:
+                    current_dict = current_dict[letter]
+                except KeyError:
+                    raise ValueError('Given start value is not in this trie.')
+
         for letter in current_dict:
             print(letter)
             print(current_dict[letter])
@@ -57,3 +63,8 @@ class Trie(object):
                 for item in self.traversal(
                         start + letter, current_dict[letter]):
                     yield item
+
+
+    # def autocomplete(start):
+    #     """Return list of top four words completing start input."""
+

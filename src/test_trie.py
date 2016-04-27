@@ -142,6 +142,23 @@ def test_traversal_5(simple_trie):
         simple_trie.insert(item)
     assert set(simple_trie.traversal()) == set(GROWTH_WORDS)
 
+
+def test_traversal_6(simple_trie):
+    """Test that we can begin traversal from a given valid start value."""
+    for item in GROWTH_WORDS:
+        simple_trie.insert(item)
+    assert set(simple_trie.traversal('sto')) == set(['stomp', 'stow',
+                                                     'stock', 'stop'])
+
+
+def test_traversal_7(simple_trie):
+    """Test that beginning traversal from bad start value raises error."""
+    for item in GROWTH_WORDS:
+        simple_trie.insert(item)
+    with pytest.raises(ValueError):
+        list(simple_trie.traversal('x'))
+
+
 # def test_a_word(all_words, word_in_dictionary):
 #     """For fun, separate test for each word in dictionary."""
 #     assert all_words.contains(word_in_dictionary)
