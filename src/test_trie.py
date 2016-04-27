@@ -103,6 +103,19 @@ def test_dictionary_false(all_words, invalid_word):
     assert not all_words.contains(invalid_word)
 
 
+def test_traversal_1(simple_trie):
+    """Test depth-first traversal returns generator of inserted words."""
+    for item in INVALID_WORDS:
+        simple_trie.insert(item)
+    for item in simple_trie.traversal():
+        assert item in INVALID_WORDS
+
+
+def test_traversal_2(simple_trie):
+    """Test traversal method on empty trie."""
+    assert list(simple_trie.traversal()) == []
+
+
 # def test_a_word(all_words, word_in_dictionary):
 #     """For fun, separate test for each word in dictionary."""
 #     assert all_words.contains(word_in_dictionary)
