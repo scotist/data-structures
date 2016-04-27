@@ -24,7 +24,17 @@ The trie is a tree data structure used to store an associative array where we ca
 
 
 ### Sort Algorithms
-Also included are implementations of the  insertion sort, merge sort, quick sort, and radix sort algorithms. Performance comparisons are as follows:
+Also included are implementations of the  insertion sort, merge sort, quick sort, and radix sort algorithms.
+
+Insertion sort iterates over a sequence, comparing each value with the previous value and swapping them if appropriate.
+
+Merge sort recursively divides a sequence in half and sorts the halves before merging them back togeher in order.
+
+Quick sort divides the sequence once around an arbitary pivot and recursively sorts the values on each side of the pivot.
+
+Radix sort compares the values from least-significant to most significant decimal, placing them in temporary buckets to create sorted order by digit.
+
+Performance comparisons are as follows:
 
 
 We tested each algorithm with a list of 990 items. We collected the average time across 10000 attempts on the best case (already sorted) and worst case (reverse sorted) lists.
