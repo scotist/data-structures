@@ -2,6 +2,10 @@
 """Implement a trie structure in Python."""
 import string
 
+WORD_TERMINUS = '$'
+
+ALLOWED_INPUT = string.ascii_letters + "'-"
+
 
 class Trie(object):
     """Make a trie structure."""
@@ -16,9 +20,8 @@ class Trie(object):
             raise TypeError('trie can only contain strings')
         if not token:
             raise ValueError('trie must contain a word')
-        for letter in token:
-            if letter not in string.ascii_letters + "'$-":
-                raise ValueError('trie only contains real words')
+        if not set(token).issubset(ALLOWED_INPUT):
+            raise ValueError('trie only contains real words')
 
     def insert(self, token):
         """Insert item into trie."""
@@ -26,7 +29,7 @@ class Trie(object):
         current_dict = self._dict
         for letter in token:
             current_dict = current_dict.setdefault(letter, {})
-        current_dict['$'] = '$'
+        current_dict[WORD_TERMINUS] = WORD_TERMINUS
 
     def contains(self, token):
         """Check if word is contained in trie."""
@@ -35,7 +38,7 @@ class Trie(object):
         try:
             for letter in token:
                 current_dict = current_dict[letter]
-            return current_dict['$'] == '$'
+            return current_dict[WORD_TERMINUS] == WORD_TERMINUS
         except KeyError:
             return False
 
