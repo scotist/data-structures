@@ -64,7 +64,17 @@ class Trie(object):
                         start + letter, current_dict[letter]):
                     yield item
 
+    def autocomplete(self, start):
+        """Return list of top four words completing start input."""
+        results = []
+        for idx in range(len(start)):
+            try:
+                results.append(list(self.traversal(start[:idx + 1]))[:4])
+            except ValueError:
+                results.append([])
+        print(results)
+        return results
 
-    # def autocomplete(start):
-    #     """Return list of top four words completing start input."""
+
+
 
