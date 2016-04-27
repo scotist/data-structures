@@ -42,7 +42,7 @@ class Trie(object):
         except KeyError:
             return False
 
-    def traversal(self, current_dict=None, start=''):
+    def traversal(self, start='', current_dict=None):
         """Return all the words in the trie."""
         # import pdb; pdb.set_trace()
         print('entering new traversal round')
@@ -54,6 +54,6 @@ class Trie(object):
             if letter == WORD_TERMINUS:
                 yield start
             else:
-                for item in self.traversal(current_dict[letter], start + letter):
+                for item in self.traversal(
+                        start + letter, current_dict[letter]):
                     yield item
-
