@@ -42,4 +42,13 @@ class Trie(object):
         except KeyError:
             return False
 
+    def traversal(self, current_dict=None, start=''):
+        """Return all the words in the trie."""
+        if current_dict is None:
+            current_dict = self._dict
+        for letter, next_dict in current_dict.items():
+            if letter == WORD_TERMINUS:
+                yield start
+            else:
+                self.traversal(current_dict=next_dict, start=start + letter)
 
