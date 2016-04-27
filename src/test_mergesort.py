@@ -7,8 +7,11 @@ import pytest
 RANDOM_INSTANCES = [random.sample(range(1000),
                     random.randrange(2, 4)) for n in range(50)]
 
+EDGE_CASES = [[0, 1, 2], [2, 1, 0], [0, 2, 1], [2, 0, 1],
+              [1, 2, 0], [1, 0, 2], [], [0], [0, 1], [1, 0]]
 
-@pytest.mark.parametrize("seq", RANDOM_INSTANCES)
+
+@pytest.mark.parametrize("seq", EDGE_CASES + RANDOM_INSTANCES)
 def test_merge_sort(seq):
     """Test insertion sort results equal build-in python sort results."""
     from merge_sort import merge_sort
@@ -78,4 +81,3 @@ def test_stable_random_3(seq):
     merge_sort(seq)
     index_a = seq.index(val_a)
     assert seq[index_a + 1] is val_b
-
