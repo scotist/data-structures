@@ -53,7 +53,7 @@ def test_stable_random(seq):
 def test_stable_random_2(seq):
     """Test that stability fails when sorting to end of list."""
     from radix_sort import radix_sort
-    if len(seq) < 3:
+    if len(seq) < 4:
         return
     seq = list(seq)
     index_a, index_b = sorted(random.sample(range(len(seq)), 2))
